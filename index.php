@@ -1,3 +1,16 @@
+<?php
+    include 'server_scripts/config.php';
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $subs = $_GET['subscribe'];
+        if($subs == "1") {
+            $email = $_POST['subscriber_email'];
+            $sql = "INSERT INTO `subscribe`(`email`) VALUES ('".$email."')";
+            $conn->query($sql);
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +29,7 @@
     <meta name="robots" content="index,follow">
 
 
-    <title>WebRes - Personal Resume Template</title>
+    <title>Ashraful Islam | Python Lover, JS Fan, Software Enthusiast</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="images/favicon/favicon.ico">
@@ -268,14 +281,18 @@
 
             <div class="col-md-6">
                 <div class="about-me-text margin-top-50">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus feugiat facilisis dignissim.
-                        Etiam scelerisque ultricies euismod. Etiam pellentesque enim ac risus dapibus consequat. Nulla
-                        euismod lacinia felis, vel <a href="#" data-toggle="modal" data-target="#skillmodal"
-                                                      title="My Skills"><b>Check out my Skills</b></a> massa accumsan
-                        sit amet. Cras id fermentum neque. Curabitur et mollis neque. Fusce eu mattis arcu. Integer eget
-                        augue sit amet lorem convallis fermentum, Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit. Vivamus feugiat facilisis dignissim. Etiam scelerisque ultricies euismod. Etiam
-                        pellentesque enim ac risus dapibus consequat.</p>
+                    <p>
+                        I am a CS graduate. I love to make a good recipe of codes, open source enthusiast,
+                        team worker and self motivated person.I love music, movies, hacking. Favorite qoute,
+                        <strong><i>When your computer is telling you something, there must be some reason.</i></strong> I am big fan JS (Specially
+                        ES6). Already started loving the architechture of facebook flux.
+                        
+                        <br/>
+                        <a href="#" data-toggle="modal" data-target="#skillmodal" title="My Skills">
+                            <b style="float: right; font-size: 1.5rem;">Check out my Skills</b>
+                        </a> 
+                        
+                    </p>
                 </div>
             </div>
 
@@ -321,7 +338,7 @@
                             <div class="divider dark">
                                 <i class="icon-energy"></i>
                             </div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+                            <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p> -->
                         </div>
                     </div>
                 </div>
@@ -397,11 +414,10 @@
                     <div class="col-sm-offset-2 col-xs-offset-0 col-md-8 col-sm-8">
 
                         <div class="margin-bottom-50">
-                            <form id="mc-form" method="post" action="">
-
+                            <form id="mc-form" method="POST" action="?subscribe=1" onsubmit="return subscriber()">
                                 <div class="subscribe-form">
-                                    <input id="mc-email" type="email" placeholder="Email Address" class="text-input">
-                                    <button class="submit-btn" type="submit">Submit</button>
+                                    <input id="mc-email" type="email" name="subscriber_email" placeholder="Email Address" class="text-input" required>
+                                    <input class="submit-btn" type="submit" value="Submit">
                                 </div>
                                 <label for="mc-email" class="mc-label"></label>
                             </form>

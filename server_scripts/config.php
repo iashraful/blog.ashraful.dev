@@ -1,8 +1,8 @@
 <?php
-    $servername = "";
-    $username = "";
-    $password = "";  // Change the password if you need
-    $database = "";
+    $servername = "localhost";
+    $username = "root";
+    $password = "admin";  // Change the password if you need
+    $database = "website";
     // Create connection
     $conn = new mysqli($servername, $username, $password, $database);
     // Check connection

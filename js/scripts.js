@@ -109,15 +109,13 @@
          $(function () {
            $('[data-toggle="tooltip"]').tooltip()
            })
-		   
-		 
-        
-        /* Ajaxchimp for Subscribe Form */
-		
-         $('#mc-form').ajaxChimp();
-		   
-		   
-  
+
+        /* Subscribe feature */
+        var subscriber = function() {
+            var email = $('#mc-email').val();
+            console.log(email);
+            return False
+        }
 		
         /* Portfolio Filtering */
 
