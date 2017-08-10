@@ -2,11 +2,21 @@
     include 'server_scripts/config.php';
 
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $subs = $_GET['subscribe'];
-        if($subs == "1") {
+        $ref = $_GET['ref'];
+        if($ref == "subscriber") {
             $email = $_POST['subscriber_email'];
             $sql = "INSERT INTO `subscribe`(`email`) VALUES ('".$email."')";
             $conn->query($sql);
+        }
+
+        if($ref == "contact") {
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $subject = $_POST['subject'];
+            $message = $_POST['message'];
+
+            $sql_query = "INSERT INTO `contact`(`name`, `email`, `subject`, `message`) VALUES ('".$name."', '".$email."', '".$subject."', '".$message."')";
+            $conn->query($sql_query);
         }
     }
 ?>
@@ -157,7 +167,7 @@
 
             <div class="col-md-5 col-sm-6">
                 <div class="me-image">
-                    <img src="images/bg/ashraful.jpg" alt="">
+                    <img src="images/bg/profile.jpg" alt="">
                 </div>
             </div>
         </div>
@@ -414,7 +424,7 @@
                     <div class="col-sm-offset-2 col-xs-offset-0 col-md-8 col-sm-8">
 
                         <div class="margin-bottom-50">
-                            <form id="mc-form" method="POST" action="?subscribe=1" onsubmit="return subscriber()">
+                            <form id="mc-form" method="POST" action="?ref=subscriber" onsubmit="return subscriber()">
                                 <div class="subscribe-form">
                                     <input id="mc-email" type="email" name="subscriber_email" placeholder="Email Address" class="text-input" required>
                                     <input class="submit-btn" type="submit" value="Submit">
@@ -476,22 +486,22 @@
 
                     <div class="row">
                         <div class="contact-us-detail"><a href="mailto:name@domain.com">ashraf@iashraful.me</a></div>
-                        <form class="contact-us pattern-bg">
+                        <form class="contact-us pattern-bg" method="POST" action="?ref=contact">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <input type="text" id="name" class="form-control" placeholder="Your Name">
+                                    <input type="text" id="name" name="name" class="form-control" placeholder="Your Name">
                                 </div>
                             </div>
 
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <input type="email" id="email" class="form-control" placeholder="Your Email" required>
+                                    <input type="email" id="email" name="email" class="form-control" placeholder="Your Email" required>
                                 </div>
                             </div>
 
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="text" id="subject" class="form-control" placeholder="Subject" required>
+                                    <input type="text" id="subject" name="subject" class="form-control" placeholder="Subject" required>
                                 </div>
                             </div>
 
@@ -499,7 +509,7 @@
                             <div class="col-sm-12">
                                 <div class="textarea-message form-group">
                                     <textarea id="message" class="textarea-message form-control"
-                                              placeholder="Your Message" rows="5" required>
+                                              name="message" placeholder="Your Message" rows="5" required>
 
                                     </textarea>
                                 </div>
