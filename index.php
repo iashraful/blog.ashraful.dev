@@ -111,6 +111,8 @@
                                     </li>
                                     <li><a class="smoth-scroll" href="#contact">Contact</a>
                                     </li>
+                                    <li><a class="smoth-scroll" href="https://blog.iashraful.me" target="_blank">Blog</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
