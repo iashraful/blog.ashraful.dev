@@ -1,9 +1,4 @@
 /**
-Template Name: Mike Vcard Template
-Author: Themarlab
-
-*/
-/**
  * Table of Contents
  * 1.0 - Fonts
  * 2.0 - Reset css
@@ -771,4 +766,9 @@ background-size: 200% auto;
 	.about-us .abt-focus .st-line{
 		width: 100%;
 	}
+}
+
+/* Override something special */
+.contrib {
+	width: 620px!important;
 }
