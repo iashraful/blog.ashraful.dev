@@ -562,10 +562,11 @@ background-size: 200% auto;
 	padding: 30px 0 8px 0;
 }
 .blog .blog-list li a{
+	margin-top: 8px;
 	display: block;
 	padding: 5px 10px;
 	border:1px solid #265CDC;
-	width: 90px;
+	width: 100px;
 	color: #265CDC;
 	-webkit-transition-duration: 0.5s;
 	transition-duration: 0.5s;
@@ -771,4 +772,30 @@ background-size: 200% auto;
 /* Override something special */
 .contrib {
 	width: 620px!important;
+}
+
+/* Medium Blog CSS */
+.blog-post p:first-child {
+	font-size: 20px;
+	font-weight: bold;
+	color: #000000;
+	margin-bottom: 15px;
+}
+
+.blog-post>figure>figcaption {
+	text-align: center;
+}
+
+.blog-post p {
+	line-height: 1.5;
+	color: #000000;
+	font-size: 14px;
+}
+
+.blog-post h3 {
+	color: #000000;
+}
+
+.blog-post h3:nth-child(2) {
+	margin-top: 20px;
 }
