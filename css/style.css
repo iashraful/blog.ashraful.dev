@@ -773,3 +773,15 @@ background-size: 200% auto;
 .contrib {
 	width: 620px!important;
 }
+
+
+.go-to-btn {
+	display: block;
+    width: 120px;
+    padding: 5px 0;
+    color: #fff;
+    background: #265CDC;
+	margin: 0 auto;
+   	text-align: center;
+   	margin-top: 1rem;
+}
