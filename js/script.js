@@ -43,7 +43,6 @@
         var converterUrl = "https://api.rss2json.com/v1/api.json?rss_url=" + url + '&api_key=mtl7nzy5pjnyztt6rjgmzkalcjzumf7cqpxjkmg7';
 
         $.get(converterUrl, function(data) {
-            console.log(data)
             produceBlogpost(data.items);
         });
 
