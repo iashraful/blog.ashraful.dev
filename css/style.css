@@ -561,7 +561,7 @@ background-size: 200% auto;
 	color: #000;
 	padding: 30px 0 8px 0;
 }
-.blog .blog-list li a{
+.blog .blog-list li .read-more-btn{
 	margin-top: 8px;
 	display: block;
 	padding: 5px 10px;
@@ -784,4 +784,9 @@ background-size: 200% auto;
 	margin: 0 auto;
    	text-align: center;
    	margin-top: 1rem;
+}
+
+/* Override CSS for blog posts */
+.medium-posts a{
+
 }
