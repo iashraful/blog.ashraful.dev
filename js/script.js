@@ -60,6 +60,29 @@
             postBody += '</div>'
             blogPostsUL.fadeIn().html(postBody);
         };
+
+        // Contact information
+        $("#contact-form").on('submit', function(e) {
+            e.preventDefault()
+            var name = $("#inp-name").val()
+            var email = $("#inp-email").val()
+            var message = $("#inp-message").val()
+            var formData = JSON.stringify({
+                name: name,
+                email: email,
+                message: message
+            })
+            $.ajax({
+                type: "POST",
+                url: document.location.pathname + 'api/v1/contact-me/',
+                data: formData,
+                success: success,
+                dataType: 'json'
+            });
+            function success(response) {
+                $.notify("Message sent. You will get replied from Ashraful.", "success");
+            }
+        })
     })
 
 })(jQuery); 
