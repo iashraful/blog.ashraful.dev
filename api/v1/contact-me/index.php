@@ -11,7 +11,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
 	// echo json_encode($data);
 	$api_response = ['status' => 200, 'success' => true];
-	$ip = $data['name'];
+	$name = $data['name'];
     $email = $data['email'];
     $message = $data['message'];
 
