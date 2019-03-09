@@ -741,7 +741,7 @@ background-size: 200% auto;
 /* Extra Small Devices, Phones */ 
 @media only screen and (max-width : 480px) {
 	.container{
-		margin:0 30px;
+		margin:0 8px;
 	}
 	.portfolio .portfolio-wrapper .portfolio-item{
 		width: 100%;
@@ -767,13 +767,20 @@ background-size: 200% auto;
 	.about-us .abt-focus .st-line{
 		width: 100%;
 	}
+	.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+		width: 5px;
+	}
+
+	.dev-icon {
+		height: 20px !important;
+		weight: 20px !important;
+	}
 }
 
 /* Override something special */
 .contrib {
 	width: 620px!important;
 }
-
 
 .go-to-btn {
 	display: block;
