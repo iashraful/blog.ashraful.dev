@@ -34,32 +34,55 @@
     $('.details-wrapper .tab-pane').mCustomScrollbar();
 
     $(document).ready(function() {
-        // Get latest post from medium
-        // Using... https://rss2json.com
-        // Random Number is just not for caching the api on that url. I want to fetch every time
-        var randomNumber = parseInt(Math.random() * 1000)
-        var username = '_ashraful'
-        var url = "https://medium.com/feed/@" + username + '?v=' + randomNumber;
-        var converterUrl = "https://api.rss2json.com/v1/api.json?rss_url=" + url + '&api_key=mtl7nzy5pjnyztt6rjgmzkalcjzumf7cqpxjkmg7';
+        setTimeout(function() {
+            $.notify("Hello!! Grettings from Ashraful.", "success");
+        }, 2000)
 
-        $.get(converterUrl, function(data) {
-            produceBlogpost(data.items);
-        });
+        setTimeout(function() {
+            $.notify("Actually you can read my writings from dev.to/ashraful", "info");
+        }, 8000)
 
+        setTimeout(function() {
+            $.notify("Even you can send me a message from contact section", "info");
+        }, 15000)
 
-        // Produce blog post
-        var produceBlogpost = function(posts) {
-            var blogPostsUL = $('#blog-posts-ul');
-            var postBody = '<div class="medium-posts">';
-            for (var i=0; i<posts.length; i++) {
-                var postDesc = posts[i].description;
-                postBody += '<h2>' + posts[i].title +'</h2><br/>'
-                postBody += '<li class="blog-post">' + postDesc.slice(0, 500) + '...</br>';
-                postBody += '<a class="read-more-btn" href="'+ posts[i].link +'" target="_blank">Read More</a></li>'
-            }
-            postBody += '</div>'
-            blogPostsUL.fadeIn().html(postBody);
-        };
+        // CV Download 
+        $("#download-cv").on('click', function(e) {
+            e.preventDefault();
+            $.notify('Redirecting to CV download page. Please allow popup. Thanks you', 'info')
+            var cvSite = 'https://www.visualcv.com/mr-ashraful/pdf';
+            setTimeout(function() {
+                window.open(cvSite, '_blank');
+            }, 2000)
+
+        })
+
+        // Show Phone number
+        $("#show-phone").on('click', function(e) {
+            e.preventDefault();
+            $.confirm({
+                title: 'Promise me!!',
+                content: 'You\'ll not disturb me??',
+                buttons: {
+                    promiseYes: {
+                        text: 'I Promise',
+                        btnClass: 'btn-blue',
+                        keys: ['enter'],
+                        action: function(){
+                            $.alert('Number: 01624153810<br/>Don\'t forget your promise.');
+                        }
+                    },
+                    promiseNo: {
+                        text: 'No Way',
+                        btnClass: 'btn-red',
+                        keys: ['esc'],
+                        action: function(){
+                            $.alert('You are welcome when you\'ll change your mind. Thanks for visiting.');
+                        }
+                    }
+                }
+            });
+        })
 
         // Contact information
         $("#contact-form").on('submit', function(e) {
