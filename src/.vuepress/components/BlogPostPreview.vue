@@ -106,6 +106,7 @@ export default {
 .blog-list__tag:hover {
   background-color: crimson;
   color: white;
+  cursor: pointer;
 }
 
 .blog-list__tag:hover::after {

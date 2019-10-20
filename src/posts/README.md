@@ -1,5 +1,6 @@
 ---
-title: Blog
+title: Posts
+pageTitle: All Posts
 ---
 
 <BlogPostList 

@@ -18,7 +18,7 @@ export default {
     data() {
         return {
             currentPage: Math.ceil(this.startPage / this.pageSize),
-            selectedTags: []
+            selectedTag: undefined
         }
     },
     computed: {
@@ -35,9 +35,9 @@ export default {
                         isCurrentLocale = item.relativePath.startsWith(localePath);   
                     }
                     // check if tags contain all of the selected tags
-                    const hasTags = !!item.frontmatter.tags && this.selectedTags.every((tag) => item.frontmatter.tags.includes(tag))
+                    const hasTags = item.frontmatter.tags && item.frontmatter.tags.includes(this.selectedTag)
 
-                    if (!isBlogPost || !isReadyToPublish || (this.selectedTags.length > 0 && !hasTags) || !isCurrentLocale){ 
+                    if (!isBlogPost || !isReadyToPublish || (this.selectedTag && !hasTags) || !isCurrentLocale){ 
                         return false
                     }
 
@@ -55,6 +55,7 @@ export default {
 
     mounted() {
         this.currentPage =  Math.min(Math.max(this.currentPage, 0), this.totalPages - 1)
+        this.selectedTag = this.$route.query['tag']
     },
 
     methods: {
@@ -65,19 +66,8 @@ export default {
             this.currentPage = this.currentPage < 0 ? 0 : this.currentPage - 1
         },
         addTag(tag) {
-            const tagExists = this.selectedTags.some(item => {
-                return item === tag
-            })
-
-            if (!tagExists){
-                this.selectedTags = this.selectedTags.concat(tag)
-            }
-        },
-        removeTag(tag) {
-            this.selectedTags.filter(t => t != tag)
-        },
-        resetTags(){
-            this.selectedTags = []
+            this.$router.push({path: '/posts/', query: {tag: tag}})
+            this.selectedTag = tag
         }
     }
 }
@@ -85,21 +75,6 @@ export default {
 
 <template>
 	<div>  
-        <div 
-            v-if="selectedTags.length > 0"
-            class="filtered-heading"
-        >
-            <h2>
-                Filtered by {{ selectedTags.join(',') }}
-            </h2>
-            <button
-                type="button"
-                @click="resetTags"
-                class="btn clear-filter-btn"
-            >
-                Clear filter
-            </button>
-        </div>
         <ul class="blog-list">
             <li v-for="(item, index) in filteredList"
                 class="blog-list__item">
