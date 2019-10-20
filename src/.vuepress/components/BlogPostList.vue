@@ -23,6 +23,7 @@ export default {
     },
     computed: {
         filteredList() {
+            this.selectedTag = this.$route.query['tag']
             if (this.pages) {
                 
                 return this.pages.filter(item => {
@@ -55,7 +56,6 @@ export default {
 
     mounted() {
         this.currentPage =  Math.min(Math.max(this.currentPage, 0), this.totalPages - 1)
-        this.selectedTag = this.$route.query['tag']
     },
 
     methods: {
@@ -67,14 +67,16 @@ export default {
         },
         addTag(tag) {
             this.$router.push({path: '/posts/', query: {tag: tag}})
-            this.selectedTag = tag
         }
     }
 }
 </script>
 
 <template>
-	<div>  
+	<div>
+        <h2 v-if="selectedTag">Showing posts for: 
+            <span class="selected-tag">{{ selectedTag }}</span>            
+        </h2>
         <ul class="blog-list">
             <li v-for="(item, index) in filteredList"
                 class="blog-list__item">
@@ -144,5 +146,12 @@ export default {
 
 .pagination {
     text-align: center;
+}
+
+.selected-tag {
+    background-color: #3eaf7c;
+    color: #fff;
+    border-radius: 2px;
+    padding: 2px 10px;
 }
 </style>
