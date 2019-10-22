@@ -75,10 +75,8 @@ export default {
 
   computed: {
     showDisqus() {
-      if(window.location.href.indexOf("localhost") < 0) {
-        return true   
-      }
-      return false
+      // TODO: We fix soon
+      return true
     },
     lastUpdated () {
       if (this.$page.lastUpdated) {
