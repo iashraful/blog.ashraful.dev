@@ -13,6 +13,8 @@
         {{ data.tagline || $description || 'Welcome to your VuePress site' }}
       </p>
 
+      <social-button/>
+
       <p
         class="action"
         v-if="data.actionText && data.actionLink"
@@ -50,10 +52,11 @@
 </template>
 
 <script>
+import SocialButton from '../components/SocialButton'
 import NavLink from '../components/NavLink.vue'
 
 export default {
-  components: { NavLink },
+  components: { NavLink, SocialButton },
 
   computed: {
     data () {
