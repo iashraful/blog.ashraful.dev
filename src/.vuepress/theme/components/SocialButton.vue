@@ -27,14 +27,26 @@ export default {
     data() {
         return {
             socialLinks: {
-                'facebook': {
-                    'icon': ['fab', 'facebook-square'],
-                    'link': 'https://facebook.com/ashraful.py'
+                'github': {
+                    'icon': ['fab', 'github-square'],
+                    'link': 'https://github.com/iashraful'
+                },
+                'linkedin': {
+                    'icon': ['fab', 'linkedin'],
+                    'link': 'https://www.linkedin.com/in/~ashraful/'
                 },
                 'twitter': {
                     'icon': ['fab', 'twitter-square'],
                     'link': 'https://twitter.com/__ashraful'
-                }
+                },
+                'stackoverflow': {
+                    'icon': ['fab', 'stack-overflow'],
+                    'link': 'https://stackoverflow.com/users/5527679/ashraful-islam'
+                },
+                'facebook': {
+                    'icon': ['fab', 'facebook-square'],
+                    'link': 'https://facebook.com/ashraful.py'
+                },
             }
         }
     }
@@ -46,5 +58,10 @@ export default {
     .social-link {
         padding: 0 7px;
         font-size: 2.8em;
+        color: #2c3e50;
+    }
+
+    .social-link:hover {
+        color: #3eaf7c;
     }
 </style>
