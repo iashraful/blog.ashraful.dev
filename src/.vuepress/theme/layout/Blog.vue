@@ -7,7 +7,7 @@
     </div>
 
     <Content class="custom" />
-    <Disqus shortname="blog-ashraful-dev"/>
+    <Disqus shortname="blog-ashraful-dev" v-if="showDisqus"/>
 
     <div class="page-edit">
       <div
@@ -74,6 +74,12 @@ export default {
   props: ['sidebarItems'],
 
   computed: {
+    showDisqus() {
+      if(window.location.href.indexOf("localhost") < 0) {
+        return true   
+      }
+      return false
+    },
     lastUpdated () {
       if (this.$page.lastUpdated) {
         const dateFormat = new Date(this.$page.lastUpdated)
