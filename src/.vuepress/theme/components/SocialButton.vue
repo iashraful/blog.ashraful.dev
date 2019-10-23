@@ -5,7 +5,7 @@
             :href="link.link" 
             v-for="link in socialLinks" 
             :key="link.link">
-            <font-awesome-icon :icon="link.icon"/>
+            <font-awesome-icon :icon="link.icon" size="3x"/>
         </a>
     </div>
 </template>
@@ -57,7 +57,6 @@ export default {
 <style scoped>
     .social-link {
         padding: 0 7px;
-        font-size: 2.8em;
         color: #2c3e50;
     }
 

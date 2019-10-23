@@ -107,10 +107,10 @@ docker build -t iashraful/docker-into .
 ## Run the image and see effect
 
 ```
-docker run -it -d -p 5001:80 --rm --name dev-to-client iashraful/dev.to-client
+docker run -it -d -p 5001:80 --rm --name docker-intro iashraful/docker-into
 ```
 Here, **-it** is short for --interactive + --tty when you docker run with this command.. it would take you straight inside of the container,, where **-d** is short for --detach which means you just run the container and then detach from it so basically you run container in the background. **-p** for mapping the machine port with container port. It's machine port:container port. **--rm** means automatically remove the image if it exists, also removes the anonymous volumes associated with the container when the container is removed. **--name** is for naming the container.
 
-If everything is alright til now then open up your browser and hit `http://localhost:5001`. You'll see your application.
+If everything is alright till now then open up your browser and hit `http://localhost:5001`. You'll see your application.
 
 I think it's enough for today. I hope next will be **Publishing docker image to Docker Hub** 
