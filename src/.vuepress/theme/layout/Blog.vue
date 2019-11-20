@@ -78,6 +78,8 @@ export default {
       try{
         if (window.location.origin.includes('localhost')) {
           return false
+        } else {
+          return true
         }
       } catch (e) {
         return true
