@@ -75,8 +75,13 @@ export default {
 
   computed: {
     showDisqus() {
-      // TODO: We fix soon
-      return true
+      try{
+        if (window.location.origin.includes('localhost')) {
+          return false
+        }
+      } catch (e) {
+        return true
+      }
     },
     lastUpdated () {
       if (this.$page.lastUpdated) {
