@@ -112,14 +112,10 @@ export default {
    border-left-color: crimson; 
 }
 
-
-
-
-
 .button {
-	border: 1px solid #32c8cf;
+	border: 1px solid #3eaf7c;
 	border-radius: 4px;
-	color: #32c8cf;
+	color: #3eaf7c;
 	font-size: 0.8rem;
 	padding: 0.5rem 0.75rem;
 	text-transform: uppercase;
