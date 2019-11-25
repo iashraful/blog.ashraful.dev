@@ -7,12 +7,25 @@ order: 1
 
 # Fast DRF (Fast Django REST Framework)
 
+## Why Fast DRF?
+Fast DRF(Django REST Framework) is for making REST API development quicker/faster with awesomeness of Django. It will help you to write less code and develop API fastest as you can. Also you can override everthing(queryset, view class, serializer, etc) you want.
+
+## How it works?
+It has a plain and simple architecture. It brings your configuration and create a runtime serializer and a runtime viewset. So, there is no option to slow down your API. It's similar as native rest framework.  
+
+**Procedure of execution**
+* Locate the enabled apps from settings. If not read all the apps from installed apps.(I always recommend to keep **ENABLED_APPS** in settings)
+* Read configurastion from each model.
+* Create a runtime serializer and runtime view.
+* Read REST framework configuration from settings.py and put them in viewset class. For example, You may have Custom Pagination class, Default Permission class like **IsAuthenticated** etc...
+* Bind into urls. It's has a own router and the router return urlpatterns in a list.
 
 ## Installation
 * Install from pypy  
 ```bash
 pip install fast-drf
 ```
+
 * Edit your `settings.py` and add the following lines,
 ```python
 FAST_API_ENABLED_APPS = {
@@ -21,7 +34,52 @@ FAST_API_ENABLED_APPS = {
 }
 ```
 
-## Quick Start
+* On your `urls.py`
+```
+from fast_drf.router import BasicRouter
+
+urlpatterns = BasicRouter.get_urls()
+```
+
+## The minimal Configuration to expose an API.(Quick Start)
+Write the following classmethod into your model. and don't forget to extend from **ExposeApiModelMixin** your model.
+```
+@classmethod
+def exposed_api(cls, *args, **kwargs):
+    return {
+        'api_url': 'an-awesome-api'
+    }
+```
+Now you will get API like, `/api/v1/an-awesome-api/`
+
+## Version your API
+Suppose you have an API and your API using by so many client software. Now you found a bug or just need to remove some fields or add some fields. In that case your existing clients get interrupted. So, what you will do? Keep the old API and make a new one without extras hassle. Follow me,
+```
+@classmethod
+def api_version_fields(cls, **kwargs):
+    return {
+        'v1': ['id', 'name', 'custom_1', 'custom_2'],
+        'v2': ['id', 'name', 'something_else']
+    }
+```
+**Note** You can pass list or tuple. But you must make sure that everthing you have passed into the each array that must me self attribute. For example, In this case `something_else` must be a model property, fields. You can write into model like following,
+```
+@property
+def something_else(self):
+    return 'This is a value'
+```
+
+## Enable Trailing Slash
+Set `APPEND_SLASH = True` at your settings.py
+
+## You don't like `/api/` as a prefix
+Set you API prefix as your own like following. Just update into `settings.py`
+```
+API_PREFIX = 'rest-api'  # Default: api
+```
+Your API will look like, /rest-api/v1/users/
+
+## Full Configuration
 * As you already installed the package, So, now update your every model or if you use base abstract model then it's good and less time you need. Update model like following,
 ```python
 from fast_drf.mixins.expose_api_model_mixin import ExposeApiModelMixin
