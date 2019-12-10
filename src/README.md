@@ -3,8 +3,8 @@ title: Home
 home: true
 heroText: Ashraful Islam
 tagline: Software Engineer at Field Buzz
-actionText: Contact
-actionLink: mailto:ashraful.py@gmail.com?Subject=Send from ashraful.dev contact
+actionText: Buy me a Coffee
+actionLink: https://ko-fi.com/ashraful
 ---
 <LatestThreePostList
   :pages="$site.pages"
