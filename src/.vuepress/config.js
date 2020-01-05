@@ -24,7 +24,7 @@ module.exports = {
 			'@vuepress/pwa',
 			{
 				serviceWorker: true,
-      			updatePopup: true
+      			updatePopup: false
 			}
 		],
 		[
@@ -32,6 +32,13 @@ module.exports = {
 			{
 				ga: 'UA-150101528-1'
 			}
+		],
+		[
+			'social-share',
+			{
+			  networks: ['twitter', 'facebook', 'reddit', 'telegram', 'whatsapp', 'skype'],
+			  twitterUser: '__ashraful',
+			},
 		],
 		'vuepress-plugin-reading-time',
 		'vuepress-plugin-janitor',
