@@ -44,7 +44,8 @@ module.exports = {
 		'vuepress-plugin-janitor',
 		'disqus',
 		'seo',
-		'reading-progress'
+		'reading-progress',
+		'@vuepress/back-to-top'
 	],
 	head: [
 		['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/logo.png' }],
