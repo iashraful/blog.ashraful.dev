@@ -40,21 +40,22 @@ Hello there, Have you ever wish to have all the dev.to posts under your own doma
 * * "twitter_username" is your twitter username
 * * "disqus_shortname" is disqus shorname or discuss comments url prefix.
 
-* Run `$ npm install`
-* Run `$ npm run serve`  
+* `$ npm install`
+* `$ npm run serve`  
 **Also you can try with the docker.**
 
 ## Deploy to VPS/any machine
 * I have included the docker file already. So, you can try with docker.
 
 #### Docker Process
-* RUN `sudo docker build -t iashraful/dev.to-client .`
-* RUN `sudo docker run -it -p 5000:80 --rm --name dev.to-client iashraful/dev.to-client`  
+> Docker Hub: [Here](https://hub.docker.com/repository/docker/iashraful/dev.to-client)
+* `sudo docker build -t iashraful/dev.to-client .`
+* `sudo docker run -it -p 5000:80 --rm --name dev.to-client iashraful/dev.to-client`  
 **You can customize the port if you need. I that case, you must need to allow the post for tcp/ip connection**
 
 #### Traditional Process
-* Run `$ npm install`
-* Run `$ npm run build`
+* `$ npm install`
+* `$ npm run build`
 * Now tell your web server to serve from `dist/` directory.  
 **You must remember to forward every request to `/index.html`. 
 Because this app handles routing with [Vue Router](https://router.vuejs.org/).** 

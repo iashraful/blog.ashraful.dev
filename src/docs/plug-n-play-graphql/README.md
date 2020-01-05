@@ -1,7 +1,7 @@
 ---
 sidebar: auto
 type: guide
-docs: true
+docs: false
 order: 1
 ---
 

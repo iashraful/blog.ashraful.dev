@@ -43,7 +43,7 @@ urlpatterns = BasicRouter.get_urls()
 
 ## The minimal Configuration to expose an API.(Quick Start)
 Write the following classmethod into your model. and don't forget to extend from **ExposeApiModelMixin** your model.
-```
+```python
 @classmethod
 def exposed_api(cls, *args, **kwargs):
     return {
@@ -54,7 +54,7 @@ Now you will get API like, `/api/v1/an-awesome-api/`
 
 ## Version your API
 Suppose you have an API and your API using by so many client software. Now you found a bug or just need to remove some fields or add some fields. In that case your existing clients get interrupted. So, what you will do? Keep the old API and make a new one without extras hassle. Follow me,
-```
+```python
 @classmethod
 def api_version_fields(cls, **kwargs):
     return {
@@ -63,7 +63,7 @@ def api_version_fields(cls, **kwargs):
     }
 ```
 **Note** You can pass list or tuple. But you must make sure that everthing you have passed into the each array that must me self attribute. For example, In this case `something_else` must be a model property, fields. You can write into model like following,
-```
+```python
 @property
 def something_else(self):
     return 'This is a value'
@@ -74,7 +74,7 @@ Set `APPEND_SLASH = True` at your settings.py
 
 ## You don't like `/api/` as a prefix
 Set you API prefix as your own like following. Just update into `settings.py`
-```
+```python
 API_PREFIX = 'rest-api'  # Default: api
 ```
 Your API will look like, /rest-api/v1/users/
