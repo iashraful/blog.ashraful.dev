@@ -36,7 +36,8 @@ module.exports = {
 		'vuepress-plugin-reading-time',
 		'vuepress-plugin-janitor',
 		'disqus',
-		'seo'
+		'seo',
+		'reading-progress'
 	],
 	head: [
 		['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/logo.png' }],
