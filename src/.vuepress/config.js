@@ -4,6 +4,8 @@ module.exports = {
 	title: 'Ashraful\'s Blog',
 	dest: './public',
 	themeConfig: {
+		domain: 'https://ashraful.dev',
+		author: 'Ashraful Islam',
 		repo: 'https://github.com/iashraful/ashraful.dev',
 		repoLabel: 'Repo',
 		editLinks: true,
@@ -24,7 +26,7 @@ module.exports = {
 			'@vuepress/pwa',
 			{
 				serviceWorker: true,
-      			updatePopup: false
+      			updatePopup: true
 			}
 		],
 		[
@@ -36,14 +38,29 @@ module.exports = {
 		[
 			'social-share',
 			{
-			  networks: ['twitter', 'facebook', 'reddit', 'telegram', 'whatsapp', 'skype'],
+			  networks: ['twitter', 'facebook', 'reddit', 'whatsapp'],
 			  twitterUser: '__ashraful',
 			},
 		],
 		'vuepress-plugin-reading-time',
 		'vuepress-plugin-janitor',
 		'disqus',
-		'seo',
+		[
+			'seo', 
+			{
+				siteTitle: (_, $site) => $site.title,
+				title: $page => $page.title,
+				description: $page => $page.frontmatter.excerpt,
+				author: (_, $site) => $site.themeConfig.author,
+				tags: $page => $page.frontmatter.tags,
+				twitterCard: _ => 'summary_large_image',
+				type: $page => ['articles', 'posts', 'blog'].some(folder => $page.regularPath.startsWith('/' + folder)) ? 'article' : 'website',
+				url: (_, $site, path) => ($site.themeConfig.domain || '') + path,
+				image: ($page, $site) => $page.frontmatter.image && (($site.themeConfig.domain || '') + $page.frontmatter.image),
+				publishedAt: $page => $page.frontmatter.date && new Date($page.frontmatter.date),
+				modifiedAt: $page => $page.lastUpdated && new Date($page.lastUpdated),
+			}
+		],
 		'reading-progress',
 		'@vuepress/back-to-top'
 	],

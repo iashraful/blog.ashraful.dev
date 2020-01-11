@@ -3,6 +3,7 @@
     <div class="blog__header">
       <p class="publish-date"><time :datetime="$frontmatter.date">{{ publishDate }}</time></p>
       <p v-if="$page.readingTime">Time to read: {{ $page.readingTime.text }}</p>
+      <img style="width: 100%; height:auto" v-if="$frontmatter.image" :src="$frontmatter.image"/>
       <h1 class="blog__title">{{ $page.title }}</h1>
     </div>
 

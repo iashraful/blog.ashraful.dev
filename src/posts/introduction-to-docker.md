@@ -4,6 +4,7 @@ date: 2019-10-21T00:00:00.644Z
 excerpt: A beginner friendly docker introduction
 type: post
 blog: true
+image: /images/docker.png
 tags:
   - Docker
   - DevOps

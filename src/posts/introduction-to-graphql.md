@@ -4,6 +4,7 @@ date: 2019-07-08T02:39:48.644Z
 excerpt: A very basic and complete intro for beginners with props and cons.
 type: post
 blog: true
+image: /images/graphql.png
 tags:
   - graphql
   - api
