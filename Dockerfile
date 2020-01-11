@@ -9,5 +9,8 @@ RUN yarn build
 
 FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /app/public /usr/share/nginx/html
+COPY .nginx/prod.conf /temp/config/nginx/prod.conf
+RUN envsubst /app < /temp/config/nginx/prod.conf > /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
 CMD ["nginx", "-g", "deamon off"]
