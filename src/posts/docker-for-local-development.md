@@ -1,7 +1,7 @@
 ---
 title: Docker for Local Development
 date: 2020-01-11T00:00:00.644Z
-excerpt: This will teach you how to containerize you application/services and setup development environment.
+excerpt: This will teach you how to containerize your application/services and setup development environment.
 type: post
 blog: true
 image: /images/docker-compose.png
@@ -18,7 +18,7 @@ tags:
 
 ## :question: Why should I use Docker in local development?
 
-Do you like to spent more time to setup your environment? If yes? just close the window. Maybe you are not in the right place. Okay no more gossiping. Let me tell you a real story.  
+Do you like to spend more time to setup your environment? If yes? just close the window. Maybe you are not in the right place. Okay no more gossiping. Let me tell you a real story.  
 
 Recently I have bought a MacBook for my personal development. I was exited to write code on it. But before that I must setup my development environment to start with it. So, without delaying I started cloning repositories from Github and then installing their dev dependencies. Seriously at the end of the day I was damn tired of doing this. One of my pet project was using Node(v8.10.*), MongoDB and React. Another projects have latest version of Node and other dependencies. So I was on trouble setting up my environment as I was new at Mac OS. So, finally I had decided to write `Dockerfile` at all my services and `Docker Compose` to run them together.
 
