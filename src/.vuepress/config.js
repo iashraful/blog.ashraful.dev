@@ -61,6 +61,17 @@ module.exports = {
 				modifiedAt: $page => $page.lastUpdated && new Date($page.lastUpdated),
 			}
 		],
+		[
+			'vuepress-plugin-zooming',
+			{
+			  selector: 'img',
+			  delay: 1000,
+			  options: {
+				bgColor: 'black',
+				zIndex: 10000,
+			  },
+			},
+		],
 		'reading-progress',
 		'@vuepress/back-to-top'
 	],
