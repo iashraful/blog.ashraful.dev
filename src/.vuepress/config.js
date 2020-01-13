@@ -61,8 +61,20 @@ module.exports = {
 				modifiedAt: $page => $page.lastUpdated && new Date($page.lastUpdated),
 			}
 		],
+		[
+			'vuepress-plugin-zooming',
+			{
+			  selector: 'img',
+			  delay: 1000,
+			  options: {
+				bgColor: 'black',
+				zIndex: 10000,
+			  },
+			},
+		],
 		'reading-progress',
-		'@vuepress/back-to-top'
+		'@vuepress/back-to-top',
+		'vuepress-plugin-smooth-scroll'
 	],
 	head: [
 		['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/logo.png' }],
