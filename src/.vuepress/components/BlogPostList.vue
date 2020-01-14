@@ -117,8 +117,9 @@ export default {
 }
 
 .button--pagination {
-	background-color: #32c8cf;
-	border-radius: 4px;
+	background-color: #3eaf7c;
+	border-radius: 2px;
+    border: 1px solid #3eaf7c;
 	color: #fff;
 	font-size: 0.8rem;
 	padding: 0.5rem 0.75rem;
@@ -130,9 +131,9 @@ export default {
 
 .button--pagination:hover {
     background-color: #fff;
-    border: 1px solid #32c8cf;
-    border-radius: 4px;
-    color: #32c8cf;
+    border: 1px solid #3eaf7c;
+    border-radius: 2px;
+    color: #3eaf7c;
 }
 
 .clear-filter-btn {

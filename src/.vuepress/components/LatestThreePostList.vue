@@ -90,36 +90,4 @@ export default {
 .blog-list__item {
 	list-style-type: none;
 }
-
-.button--pagination {
-	background-color: #32c8cf;
-	border-radius: 4px;
-	color: #fff;
-	font-size: 0.8rem;
-	padding: 0.5rem 0.75rem;
-	text-transform: uppercase;
-	font-weight: 700;
-	box-shadow: 0 0;
-	transition: background-color 0.2s ease-in, color 0.2s ease-in;
-}
-
-.button--pagination:hover {
-    background-color: #fff;
-    border: 1px solid #32c8cf;
-    border-radius: 4px;
-    color: #32c8cf;
-}
-
-.clear-filter-btn {
-    align-self: center;
-    margin-left: 20px;
-}
-
-.filtered-heading {
-    display: flex;
-}
-
-.pagination {
-    text-align: center;
-}
 </style>
