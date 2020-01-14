@@ -13,7 +13,8 @@ const msgs = [
   `There's nothing here.`,
   `How did we get here?`,
   `That's a Four-Oh-Four.`,
-  `Looks like we've got some broken links.`
+  `Looks like we've got some broken links.`,
+  `Your activity will be reported for this kind of behavior.`
 ]
 
 export default {
