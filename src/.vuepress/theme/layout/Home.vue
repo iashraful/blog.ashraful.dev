@@ -26,27 +26,13 @@
       </p>
     </div>
 
-    <div
-      class="features"
-      v-if="data.features && data.features.length"
-    >
-      <div
-        class="feature"
-        v-for="(feature, index) in data.features"
-        :key="index"
-      >
-        <h2>{{ feature.title }}</h2>
-        <p>{{ feature.details }}</p>
-      </div>
-    </div>
-
     <Content custom/>
 
     <div
       class="footer"
       v-if="data.footer"
     >
-      {{ data.footer }}
+      <span v-html="data.footer"></span>
     </div>
   </div>
 </template>
