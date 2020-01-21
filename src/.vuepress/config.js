@@ -74,7 +74,12 @@ module.exports = {
 		],
 		'reading-progress',
 		'@vuepress/back-to-top',
-		'vuepress-plugin-smooth-scroll'
+		'vuepress-plugin-smooth-scroll',
+		[
+			'sitemap', {
+				hostname: 'https://ashraful.dev'
+			}
+		]
 	],
 	head: [
 		['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/logo.png' }],
