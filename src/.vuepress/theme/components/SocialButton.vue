@@ -1,5 +1,5 @@
 <template>
-    <div style="height: 50px">
+    <div style="height: 50px; margin-bottom: 4rem">
         <a class="social-link"
            target="_blank"
            :href="link.link"
