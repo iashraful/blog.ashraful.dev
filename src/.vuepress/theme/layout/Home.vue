@@ -28,6 +28,7 @@
 
     <div class="content-list">
       <Content custom/>
+      <a class="block-button" href="/archive/">Browse all posts</a>
     </div>
     <div class="twitter-card">
       <Timeline id="__ashraful" source-type="profile" widget-class="mt-3 my-custom-class"/>
@@ -59,6 +60,7 @@ export default {
         link: this.data.actionLink,
         text: this.data.actionText
       }
+      
     }
   }
 }
@@ -128,6 +130,15 @@ export default {
   .content-list
     display inline-block
     width 65%
+    .block-button
+      display: block;
+      width 97%
+      height 20px
+      background #3eaf7c
+      padding 10px
+      text-align center
+      border-radius 5px
+      color white
   .twitter-card
     display inline-block
     width 34%
