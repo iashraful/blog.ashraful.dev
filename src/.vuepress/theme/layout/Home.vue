@@ -26,8 +26,12 @@
       </p>
     </div>
 
-    <Content custom/>
-
+    <div class="content-list">
+      <Content custom/>
+    </div>
+    <div class="twitter-card">
+      <Timeline id="__ashraful" source-type="profile" widget-class="mt-3 my-custom-class"/>
+    </div>
     <div
       class="footer"
       v-if="data.footer"
@@ -40,9 +44,10 @@
 <script>
 import SocialButton from '../components/SocialButton'
 import NavLink from '../components/NavLink.vue'
+import { Timeline } from 'vue-tweet-embed'
 
 export default {
-  components: { NavLink, SocialButton },
+  components: { NavLink, SocialButton, Timeline },
 
   computed: {
     data () {
@@ -63,7 +68,6 @@ export default {
 @import '../styles/config.styl'
 
 .home
-  padding $navbarHeight 22% 0
   max-width 960px
   margin 0px auto
   .hero
@@ -121,24 +125,22 @@ export default {
     border-top 1px solid $borderColor
     text-align center
     color lighten($textColor, 25%)
+  .content-list
+    display inline-block
+    width 65%
+  .twitter-card
+    display inline-block
+    width 34%
+    max-height 845px
+    overflow-x auto
 
 @media (max-width: $MQMobile)
   .home
-    padding $navbarHeight 5% 0
     .features
       flex-direction column
     .feature
       max-width 100%
       padding 0 2.5rem
-
-@media (min-width: $MQMobile)
-  .home
-    padding $navbarHeight 7rem 0
-
-
-@media (min-width: $MQNarrow)
-  .home
-    padding $navbarHeight 22% 0
 
 @media (max-width: $MQMobileNarrow)
   .home
