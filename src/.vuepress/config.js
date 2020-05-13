@@ -65,7 +65,7 @@ module.exports = {
 		[
 			'vuepress-plugin-zooming',
 			{
-			  selector: 'img',
+			  selector: '.blog img',
 			  delay: 1000,
 			  options: {
 				bgColor: 'black',
