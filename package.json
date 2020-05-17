@@ -1,7 +1,7 @@
 {
 	"name": "ashraful.dev",
 	"description": "Ashraful Islam | Software Engineer at Field Buzz",
-	"version": "1.0.1",
+	"version": "2.0.2",
 	"license": "MIT",
 	"scripts": {
 		"serve": "vuepress dev src",

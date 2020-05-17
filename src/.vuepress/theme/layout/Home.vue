@@ -26,12 +26,14 @@
       </p>
     </div>
 
-    <div class="content-list">
-      <Content custom/>
-      <a class="block-button" href="/archive/">Browse all posts</a>
-    </div>
-    <div class="twitter-card">
-      <Timeline id="__ashraful" source-type="profile" widget-class="mt-3 my-custom-class"/>
+    <div class="home-content">
+      <div class="content-list">
+        <Content custom/>
+        <router-link class="block-button" to="/archive">Browse all posts</router-link>
+      </div>
+      <div class="twitter-card">
+        <Timeline id="__ashraful" source-type="profile" widget-class="mt-3 my-custom-class"/>
+      </div>
     </div>
     <div
       class="footer"
@@ -126,9 +128,9 @@ export default {
     border-top 1px solid $borderColor
     text-align center
     color lighten($textColor, 25%)
+  .home-content
+    display flex
   .content-list
-    display inline-block
-    width 65%
     .block-button
       display: block;
       width 97%
@@ -139,18 +141,23 @@ export default {
       border-radius 5px
       color white
   .twitter-card
-    display inline-block
-    width 34%
     max-height 845px
     overflow-x auto
 
 @media (max-width: $MQMobile)
   .home
+    padding-left 1.5rem
+    padding-right 1.5rem
     .features
       flex-direction column
     .feature
       max-width 100%
       padding 0 2.5rem
+    .content-list
+      width 100%
+      display block
+    .twitter-card
+      display none 
 
 @media (max-width: $MQMobileNarrow)
   .home
