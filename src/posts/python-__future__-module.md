@@ -55,16 +55,16 @@ Hello, World
 Here, I have imported print_fuction from __future__ module. Then it's working as expected from python3. I hope you got it.
 
 ## :flushed: Available future functions
-`nested_scopes`
-`generators`
-`division`
-`absolute_import`
-`with_statement`
-`print_function`
-`unicode_literals`
-`barry_as_FLUFL`
-`generator_stop`
-`annotations`
+`nested_scopes`  
+`generators`  
+`division`  
+`absolute_import`  
+`with_statement`  
+`print_function`  
+`unicode_literals`  
+`barry_as_FLUFL`  
+`generator_stop`  
+`annotations`  
 
 See the source [here](https://github.com/python/cpython/blob/3.8/Lib/__future__.py)
 
