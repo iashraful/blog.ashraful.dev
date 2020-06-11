@@ -1,6 +1,6 @@
 ---
 title: Django GenericForeignKey with GenericRelation
-date: 2020-05-18T00:00:48.644Z
+date: 2020-06-11T00:00:48.644Z
 excerpt: What is GenericForeignKey and How to use it properly with GenericRelation
 image: /images/django-unchained.jpg
 type: post
