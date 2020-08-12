@@ -28,9 +28,10 @@ pip install fast-drf
 
 * Edit your `settings.py` and add the following lines,
 ```python
-FAST_API_ENABLED_APPS = {
-    'core',  # Any custom app
-    'my_app'  # Another custom app
+FAST_DRF_CONFIG = {
+    'DEFAULT_APPLIED_APPS': (
+        'example_app', 'another_app'
+    )
 }
 ```
 
@@ -75,7 +76,11 @@ Set `APPEND_SLASH = True` at your settings.py
 ## You don't like `/api/` as a prefix
 Set you API prefix as your own like following. Just update into `settings.py`
 ```python
-API_PREFIX = 'rest-api'  # Default: api
+FAST_DRF_CONFIG = {
+    # ...
+    'DEFAULT_API_PREFIX': 'rest-api'  # Default 'api'
+    # ...
+}
 ```
 Your API will look like, /rest-api/v1/users/
 
@@ -121,3 +126,12 @@ class MyModel(ExposeApiModelMixin, models.Model):
 ```
 
 **That's it.** You can also override serializer class and viewset class
+
+
+## Filtering on API
+Suppose you have a nice API like: `api/v1/posts/`. I assume your model have fields like, `title`, `description`, `author`(ForeignKey with User) etc. And you need to filter you data based on these fields. Where it comes default filtering enabled for all the model fields. You just need to pass the param into the API just like following...
+
+```
+http://yourdomain.com/api/v1/posts/?search=1&title:icontains=test&description:icontains=hello&author_id=10
+```
+You don't need to pass all the fields. Just pass the param you want to be filtered out. One thing to remember is `search=1`. If you forget to put it, you won't be able to filter using all those params. So, `search=1` is important here. Another good news is, here it supports all the django filtering options like, `icontains`, `contains`, `exact`, `iexact` etc. Remember whenever you are going to use one of these you must seperate the filtered field with `:`. Like, `title:icontains`. That's it :)
