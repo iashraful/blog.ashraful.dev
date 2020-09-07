@@ -14,7 +14,8 @@ module.exports = {
 			{ text: 'Home', link: '/' }, 
 			{ text: 'Posts', link: '/posts/' },
 			{ text: 'Archive', link: '/archive/' },
-			{ text: 'Docs', link: '/docs/' }
+			{ text: 'Docs', link: '/docs/' },
+			{ text: 'Portfolio', link: 'https://portfolio.ashraful.dev' }
 		],
 		logo: '/logo.png',
 		docsDir: 'src',
