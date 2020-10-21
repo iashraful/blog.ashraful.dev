@@ -8,26 +8,26 @@
 		"build": "vuepress build src"
 	},
 	"dependencies": {
-		"@fortawesome/fontawesome-svg-core": "^1.2.25",
-		"@fortawesome/free-brands-svg-icons": "^5.11.2",
-		"@fortawesome/vue-fontawesome": "^0.1.7",
+		"@fortawesome/fontawesome-svg-core": "^1.2.32",
+		"@fortawesome/free-brands-svg-icons": "^5.15.1",
+		"@fortawesome/vue-fontawesome": "^2.0.0",
 		"vue-tweet-embed": "^2.4.0"
 	},
 	"devDependencies": {
-		"@vuepress/plugin-back-to-top": "^1.2.0",
-		"@vuepress/plugin-google-analytics": "^1.2.0",
-		"@vuepress/plugin-pwa": "^1.0.0-rc.1",
-		"vuepress": "^1.2.0",
-		"vuepress-plugin-disqus": "^0.1.1",
+		"@vuepress/plugin-back-to-top": "^1.7.1",
+		"@vuepress/plugin-google-analytics": "^1.7.1",
+		"@vuepress/plugin-pwa": "^1.7.1",
+		"vuepress": "^1.7.1",
+		"vuepress-plugin-disqus": "^0.2.0",
 		"vuepress-plugin-janitor": "^1.0.0",
-		"vuepress-plugin-reading-progress": "^1.0.8",
+		"vuepress-plugin-reading-progress": "^1.0.10",
 		"vuepress-plugin-reading-time": "^0.1.1",
 		"vuepress-plugin-rss": "^2.0.0",
-		"vuepress-plugin-seo": "^0.1.2",
+		"vuepress-plugin-seo": "^0.1.4",
 		"vuepress-plugin-sitemap": "^2.3.1",
-		"vuepress-plugin-smooth-scroll": "^0.0.9",
-		"vuepress-plugin-social-share": "^0.1.2",
-		"vuepress-plugin-zooming": "^1.1.7",
-		"yaml-front-matter": "^4.0.0"
+		"vuepress-plugin-smooth-scroll": "^0.0.10",
+		"vuepress-plugin-social-share": "^1.0.0",
+		"vuepress-plugin-zooming": "^1.1.8",
+		"yaml-front-matter": "^4.1.0"
 	}
 }
