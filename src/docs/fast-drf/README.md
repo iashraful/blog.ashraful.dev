@@ -93,7 +93,6 @@ from django.db import models
 
 class MyModel(ExposeApiModelMixin, models.Model):
     #... All yor fields
-    pass
     
     # The following methods are available from model mixin
     @classmethod
@@ -135,3 +134,26 @@ Suppose you have a nice API like: `api/v1/posts/`. I assume your model have fiel
 http://yourdomain.com/api/v1/posts/?search=1&title:icontains=test&description:icontains=hello&author_id=10
 ```
 You don't need to pass all the fields. Just pass the param you want to be filtered out. One thing to remember is `search=1`. If you forget to put it, you won't be able to filter using all those params. So, `search=1` is important here. Another good news is, here it supports all the django filtering options like, `icontains`, `contains`, `exact`, `iexact` etc. Remember whenever you are going to use one of these you must seperate the filtered field with `:`. Like, `title:icontains`. That's it :)
+
+
+## Optimizing the Number of Queries
+Do you like to optimize the number of queries over the API? If YES? you are on the right place. As we are working wit Django and DRF. We have a built in support for prefetch and select. To know more about this please visit https://docs.djangoproject.com/en/3.1/ref/models/querysets/#select-related.  
+The following implementation works for our library.
+```python
+class MyModel(ExposeApiModelMixin, models.Model):
+    @classmethod
+    def exposed_api(cls, *args, **kwargs):
+        pass
+
+    # All yor fields
+    @classmethod
+    def api_prefetch_related_fields(cls):
+        # Only the m2m and reverse related fields
+        return ['field_1', 'field_2']
+
+    @classmethod
+    def api_select_related_fields(cls):
+        # Only foreignkey fields
+        return ['field_1', 'field_2']
+```
+So, Where you have enabled the API and you have some relational fields you just need to declare them on the list to optimize the database joining.
