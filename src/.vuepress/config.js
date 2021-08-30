@@ -40,7 +40,7 @@ module.exports = {
 			'social-share',
 			{
 			  networks: ['twitter', 'facebook', 'reddit', 'whatsapp'],
-			  twitterUser: '__ashraful',
+			  twitterUser: '_ashraful',
 			},
 		],
 		'vuepress-plugin-reading-time',
