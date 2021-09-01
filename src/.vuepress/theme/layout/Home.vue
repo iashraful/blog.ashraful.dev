@@ -32,7 +32,7 @@
         <router-link class="block-button" to="/archive">Browse all posts</router-link>
       </div>
       <div class="twitter-card">
-        <Timeline id="__ashraful" source-type="profile" widget-class="mt-3 my-custom-class"/>
+        <Timeline id="_ashraful" source-type="profile" widget-class="mt-3 my-custom-class"/>
       </div>
     </div>
     <div

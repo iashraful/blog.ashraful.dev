@@ -38,7 +38,7 @@
                     },
                     'twitter': {
                         'icon': ['fab', 'twitter-square'],
-                        'link': 'https://twitter.com/__ashraful'
+                        'link': 'https://twitter.com/_ashraful'
                     },
                     'stackoverflow': {
                         'icon': ['fab', 'stack-overflow'],
