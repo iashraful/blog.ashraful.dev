@@ -1,10 +1,20 @@
 <script>
+import TutorialItemList from './TutorialItemList.vue'
 export default {
-    name: 'BlogPostList',
+  components: { TutorialItemList },
+    name: 'TutorialSeriesList',
     props: {
         pages: {
             type: Array,
             default: []
+        },
+        title: {
+            type: String,
+            default: "Tutorial Series"
+        },
+        tutorialKey: {
+            type: String,
+            default: 'series'
         },
         pageSize: {
             type: Number,
@@ -27,7 +37,7 @@ export default {
             if (this.pages) {
                 
                 return this.pages.filter(item => {
-                    const isBlogPost = !!item.frontmatter.blog
+                    const isSeries = !!item.frontmatter[this.tutorialKey]
                     const isReadyToPublish = new Date(item.frontmatter.date) <= new Date()
                      // check for locales
                     let isCurrentLocale = true;
@@ -38,13 +48,12 @@ export default {
                     // check if tags contain all of the selected tags
                     const hasTags = item.frontmatter.tags && item.frontmatter.tags.includes(this.selectedTag)
 
-                    if (!isBlogPost || !isReadyToPublish || (this.selectedTag && !hasTags) || !isCurrentLocale){ 
+                    if (!isSeries || !isReadyToPublish || (this.selectedTag && !hasTags) || !isCurrentLocale){ 
                         return false
                     }
-
                     return true
                     
-                }).sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date))
+                }).sort((a, b) => (a.order < b.order) ? -1 : 1)
             }
         },
 
@@ -72,16 +81,14 @@ export default {
 </script>
 
 <template>
-	<div>
-        <h2 v-if="selectedTag">Showing posts for: 
-            <span class="selected-tag">{{ selectedTag }}</span>            
-        </h2>
+	<div style="margin-bottom: 2rem">
+        <h3 style="margin-bottom: 0;">{{ title }}</h3>
+        <hr />
         <ul class="blog-list">
-            <li v-for="(item, index) in filteredList"
-                class="blog-list__item" :key="index">
-                <BlogPostPreview 
+            <li v-for="(item, index) in filteredList" class="blog-list__item" :key="index">
+                <tutorial-item-list 
                     v-show="index >= currentPage * pageSize && index < (currentPage + 1) * pageSize"
-                    :item="item" @addedTag="addTag"
+                    :item="item"  :index="index" @addedTag="addTag"
                 />
             </li>
         </ul>

@@ -1,6 +1,16 @@
 <template>
   <div class="page">
     <slot name="top"/>
+    <div class="blog__header" v-if="$frontmatter.type === 'post'">
+      <p class="publish-date"><time :datetime="$frontmatter.date">{{ publishDate }}</time></p>
+      <p v-if="$page.readingTime">Time to read: {{ $page.readingTime.text }}</p>
+      <h1 class="blog__title">{{ $page.title }}</h1>
+      <img
+        style="width: 100%; height:auto"
+        v-if="$frontmatter.image"
+        :alt="$page.title"
+        :src="$frontmatter.image"/>
+    </div>
     
     <Content :custom="false"/>
 
@@ -135,6 +145,16 @@ export default {
         this.$site.themeConfig.editLinkText ||
         `Edit this page`
       )
+    },
+    publishDate() {
+      const dateFormat = new Date(this.$frontmatter.date)
+      const options = {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+      } 
+      
+      return dateFormat.toLocaleDateString(this.$lang, options)
     }
   },
 
