@@ -16,15 +16,18 @@ tags:
 ---
 
 ## Introduction
+
 Fast-API is a modern, fast (high-performance), web framework for building APIs with Python 3.6+ based on standard Python type hints. In this tutorial we will be covering the following things,
-* Project Setup
-* Introducing with SQLAlchemy, Pydantic etc necessary modules
-* Model vs Schema, Data validation
-* Making APIs, Query Params
-* Database migration with Alembic (SQLAlchemy tool)
-* Authentication with JWT
+
+- Project Setup
+- Introducing with SQLAlchemy, Pydantic etc necessary modules
+- Model vs Schema, Data validation
+- Making APIs, Query Params
+- Database migration with Alembic (SQLAlchemy tool)
+- Authentication with JWT
 
 ## Project Structure
+
 Many men many minds. So this project structure is a Bible that you can't override. I just personally like this kind of structure.
 
 ```
@@ -44,6 +47,5 @@ Many men many minds. So this project structure is a Bible that you can't overrid
 |-- requirements.txt
 |-- .gitignore
 ```
+
 **We will be adjusting the structure in near future according to project's need**
-
-

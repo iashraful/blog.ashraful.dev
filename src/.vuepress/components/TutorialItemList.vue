@@ -6,7 +6,7 @@ export default {
             type: Object,
             required: true
         },
-        index: {
+        order: {
             type: Number,
         }
     },
@@ -32,7 +32,7 @@ export default {
 <template>
 	<section>
         <h3 class="blog-post__title">
-            {{index + 1}}.
+            {{order}}.
             <router-link :to="item.path">{{ item.frontmatter.title }}</router-link>
             <span style="font-size: 12px">(Estimated time: {{ item.readingTime.text }})</span>
         </h3>
