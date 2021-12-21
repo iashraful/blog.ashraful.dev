@@ -14,7 +14,7 @@ module.exports = {
 			{ text: 'Home', link: '/' }, 
 			{ text: 'Posts', link: '/posts/' },
 			{ text: 'Archive', link: '/archive/' },
-			{ text: 'Docs', link: '/docs/' },
+			{ text: 'Tutorials', link: '/tutorials/' },
 			{ text: 'Portfolio', link: 'https://portfolio.ashraful.dev' }
 		],
 		logo: '/logo.png',
@@ -27,7 +27,7 @@ module.exports = {
 			'@vuepress/pwa',
 			{
 				serviceWorker: true,
-      			updatePopup: true
+      	updatePopup: true
 			}
 		],
 		[
@@ -49,7 +49,7 @@ module.exports = {
 		[
 			'seo', 
 			{
-				siteTitle: (_, $site) => $site.title,
+				siteTitle: (_, $site) => `${$site.title} - Mohammad Ashraful Islam`,
 				title: $page => $page.title,
 				description: $page => $page.frontmatter.excerpt,
 				author: (_, $site) => $site.themeConfig.author,

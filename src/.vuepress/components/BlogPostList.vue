@@ -49,7 +49,6 @@ export default {
         },
 
         totalPages() {
-            
             return Math.ceil(this.filteredList.length / this.pageSize)
         },
     },
@@ -79,7 +78,7 @@ export default {
         </h2>
         <ul class="blog-list">
             <li v-for="(item, index) in filteredList"
-                class="blog-list__item">
+                class="blog-list__item" :key="index">
                 <BlogPostPreview 
                     v-show="index >= currentPage * pageSize && index < (currentPage + 1) * pageSize"
                     :item="item" @addedTag="addTag"
