@@ -34,7 +34,6 @@ export default {
     computed: {
         filteredList() {
             if (this.pages) {
-                
                 return this.pages.filter(item => {
                     const isSeries = !!item.frontmatter[this.tutorialKey]
                     const isReadyToPublish = new Date(item.frontmatter.date) <= new Date()
@@ -50,7 +49,7 @@ export default {
                     }
                     return true
                     
-                }).sort((a, b) => (a.order < b.order) ? -1 : 1)
+                }).sort((a, b) => (a.frontmatter.order < b.frontmatter.order) ? -1 : 1)
             }
         }
     }
