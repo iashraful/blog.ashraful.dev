@@ -11,10 +11,10 @@ module.exports = {
 		editLinks: true,
 		editLinkText: 'Found a correction? Send me a PR!',
 		nav: [
-			{ text: 'Home', link: '/' }, 
+			{ text: 'Home', link: '/' },
 			{ text: 'Posts', link: '/posts/' },
 			{ text: 'Archive', link: '/archive/' },
-			{ text: 'Tutorials', link: '/tutorials/' },
+			// { text: 'Tutorials', link: '/tutorials/' },
 			{ text: 'Portfolio', link: 'https://portfolio.ashraful.dev' }
 		],
 		logo: '/logo.png',
@@ -27,7 +27,7 @@ module.exports = {
 			'@vuepress/pwa',
 			{
 				serviceWorker: true,
-      	updatePopup: true
+				updatePopup: true
 			}
 		],
 		[
@@ -39,15 +39,15 @@ module.exports = {
 		[
 			'social-share',
 			{
-			  networks: ['twitter', 'facebook', 'reddit', 'whatsapp'],
-			  twitterUser: '_ashraful',
+				networks: ['twitter', 'facebook', 'reddit', 'whatsapp'],
+				twitterUser: '_ashraful',
 			},
 		],
 		'vuepress-plugin-reading-time',
 		'vuepress-plugin-janitor',
 		'disqus',
 		[
-			'seo', 
+			'seo',
 			{
 				siteTitle: (_, $site) => `${$site.title} - Mohammad Ashraful Islam`,
 				title: $page => $page.title,
@@ -65,12 +65,12 @@ module.exports = {
 		[
 			'vuepress-plugin-zooming',
 			{
-			  selector: '.blog img',
-			  delay: 1000,
-			  options: {
-				bgColor: 'black',
-				zIndex: 10000,
-			  },
+				selector: '.blog img',
+				delay: 1000,
+				options: {
+					bgColor: 'black',
+					zIndex: 10000,
+				},
 			},
 		],
 		'reading-progress',
