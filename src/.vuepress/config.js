@@ -1,12 +1,10 @@
-const currentDateUTC = new Date().toUTCString()
-
 module.exports = {
 	title: 'Ashraful\'s Blog',
 	dest: './public',
 	themeConfig: {
-		domain: 'https://ashraful.dev',
+		domain: 'https://blog.ashraful.dev',
 		author: 'Ashraful Islam',
-		repo: 'https://github.com/iashraful/ashraful.dev',
+		repo: 'https://github.com/iashraful/blog.ashraful.dev',
 		repoLabel: 'Repo',
 		editLinks: true,
 		editLinkText: 'Found a correction? Send me a PR!',
@@ -15,7 +13,7 @@ module.exports = {
 			{ text: 'Posts', link: '/posts/' },
 			{ text: 'Archive', link: '/archive/' },
 			// { text: 'Tutorials', link: '/tutorials/' },
-			{ text: 'Portfolio', link: 'https://portfolio.ashraful.dev' }
+			{ text: 'Portfolio', link: 'https://ashraful.dev' }
 		],
 		logo: '/logo.png',
 		docsDir: 'src',
@@ -78,7 +76,7 @@ module.exports = {
 		'vuepress-plugin-smooth-scroll',
 		[
 			'sitemap', {
-				hostname: 'https://ashraful.dev'
+				hostname: 'https://blog.ashraful.dev'
 			}
 		]
 	],
