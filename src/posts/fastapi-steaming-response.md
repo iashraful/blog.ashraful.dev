@@ -1,98 +1,61 @@
 ---
-title: FastAPI Steaming Response
-date: 2022-05-09T10:39:48.644Z
-excerpt: Steaming response is a way to respond user continuously. Today we will learn how to properly use the steaming response.
+title: FastAPI Streaming Response
+date: 2022-06-30T10:39:48.644Z
+excerpt: Streaming response is a way to respond user continuously. Today we will learn how to properly use the steaming response.
 type: post
 blog: true
 image: /images/fast-api-cover.png
 tags:
   - python
   - fastapi
-  - steam
+  - stream
 
 ---
-## What is Testing:question:
-Testing is basically checking the features are okay or not and finding bugs on the system. Basically, there are many types of testing we do with software. Today we will talk about the most famous unit testing process. Let's keep going.
+## What is a streaming response?
+**Streaming Response** basically stream the data. So, how this happen?? Let's say you have a good amount of data. For example, 10MB text data. How you will send data through API? You might get timeout, other network issues for downloading the such a data from server. So, Streaming response come in first place to resolve the issue.
 
-## What is a unit testing:question:
-A unit test is a way of testing a unit - the smallest piece of code that can be logically isolated in a system. In most programming languages, that is a function, a subroutine, a method or property.
+## How it works?
+It's really simple. Think how your downloader works, chunk by chunk. So, the Streaming response is. Your 10MB will be downloaded chunk by chunk. In the technical language we call it multipart.
 
-## Python's builtin unittest :boom:
-Let's try some functions and their unit tests
+## Streaming Response in FastAPI
 ```python
-# test_add.py
-# A very basic function for adding two numbers
-def add(a: int, b: int) -> int:
-    return a + b
+from typing import Generator
+from starlette.responses import StreamingResponse
+from fastapi import status, HTTPException
 
-# Writing Unit Test
-import unittest
+# A simple method to open the file and get the data
+def get_data_from_file(file_path: str) -> Generator:
+    with open(file=file_path, mode="rb") as file_like:
+        yield file_like.read()
 
-class TryingTheAwesomeUnitTest(unittest.TestCase):
-    def test_add(self):
-        self.assertEqual(add(5, 7), 12)
-
-if __name__ == '__main__':
-    unittest.main()
+# Now response the API
+async def get_image_file(path: str):
+    try:
+        file_contents = get_image_from_file(file_path=path)
+        response = StreamingResponse(
+            content=file_contents,
+            status_code=status.HTTP_200_OK,
+            media_type="text/html",
+        )
+        return response
+    except FileNotFoundError:
+        raise HTTPException(detail="File not found.", status_code=status.HTTP_404_NOT_FOUND)
 ```
+You just use the function `get_image_file` and you'll get your desired Streaming response.  
 
-Save the file as `test_add.py` and run the file `python3 test_add.py` and see the following output.
-```
-.
-----------------------------------------------------------------------
-Ran 1 test in 0.000s
+## Why I am writing about it?
+Because there is a twist about it. Starlette(The mother of FastAPI) encountered a bug about async generator. To working around the issue in FastAPI it created another issue. When you use sync generator for serving file or stream the response it because really slow.
+[Bug link here](https://github.com/encode/starlette/issues/793).
 
-OK
-```
-
-## Introduction to PyTest :rocket:
-> [pytest](https://docs.pytest.org/): helps you write better programs
-
-Pytest is another testing library for Python. Let's dig into it.
-
-### Installation:bulb:
-```
-pip install pytest
-```
-
+**Moral of the story** We should use the async generator for serving/streaming the API. Implementation is here,
 ```python
-# test_2_add.py
+from typing import Generator
 
-# The same old function
-def add(a: int, b: int) -> int:
-    return a + b
+# Just use the async function you already have. :)
+async def get_data_from_file(file_path: str) -> Generator:
+    with open(file=file_path, mode="rb") as file_like:
+        yield file_like.read()
 
-def test_add():
-    assert add(3, 5) == 9 # I want see the fail response
 ```
 
-### Run the tests:bug:
-Just type `pytest` on the directory where you have saved the file.
-```
-$ pytest
-```
-
-### Result:see_no_evil:
-```
-============================================ test session starts =============================================
-platform darwin -- Python 3.8.1, pytest-6.2.4, py-1.10.0, pluggy-0.13.1
-rootdir: /Users/ashraful/Public/scripts
-collected 1 item
-
-test_2_add.py F                                                                                        [100%]
-
-================================================== FAILURES ==================================================
-__________________________________________________ test_add __________________________________________________
-
-    def test_add():
->       assert add(3, 5) == 9 # I want see the fail response
-E       assert 8 == 9
-E        +  where 8 = add(3, 5)
-
-test_2_add.py:8: AssertionError
-========================================== short test summary info ===========================================
-FAILED test_2_add.py::test_add - assert 8 == 9
-============================================= 1 failed in 0.04s ==============================================
-```
-
-**Tips:** Don't forget to put the filename `test_` as prefix otherwise pytest can't detect the file. Whatever `test_` as prefix is mandatory convention for test case.
+That's it. Now I am good to go. 
