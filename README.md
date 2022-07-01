@@ -1,1 +1,1 @@
-Visit https://ashraful.dev for live.
+Visit https://blog.ashraful.dev for live.
