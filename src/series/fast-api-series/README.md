@@ -2,6 +2,7 @@
 title: Fast-API Tutorial Series
 pageTitle: Fast-API Tutorial Series
 tutorial: true
+published: false
 ---
 
 <TutorialSeriesList 

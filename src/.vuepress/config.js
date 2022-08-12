@@ -12,7 +12,7 @@ module.exports = {
 			{ text: 'Home', link: '/' },
 			{ text: 'Posts', link: '/posts/' },
 			{ text: 'Archive', link: '/archive/' },
-			// { text: 'Tutorials', link: '/tutorials/' },
+			{ text: 'Series', link: '/series/' },
 			{ text: 'Portfolio', link: 'https://ashraful.dev' }
 		],
 		logo: '/logo.png',

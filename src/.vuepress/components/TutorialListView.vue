@@ -11,7 +11,7 @@ export default {
         filteredList() {
             if (this.pages) {
                 return this.pages.filter(item => {
-                    return item.frontmatter.tutorial == true
+                    return item.frontmatter.tutorial == true && item.frontmatter.published == true
                 })
             }
         },
