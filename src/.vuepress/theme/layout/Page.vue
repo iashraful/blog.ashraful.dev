@@ -13,6 +13,7 @@
     </div>
     
     <Content :custom="false"/>
+    <Disqus shortname="blog-ashraful-dev" v-if="showDisqus"/>
 
     <div class="page-edit">
       <div
@@ -78,6 +79,17 @@ export default {
   props: ['sidebarItems'],
 
   computed: {
+    showDisqus() {
+      try{
+        if (window.location.origin.includes('localhost')) {
+          return false
+        } else {
+          return true
+        }
+      } catch (e) {
+        return true
+      }
+    },
     lastUpdated () {
       if (this.$page.lastUpdated) {
         return new Date(this.$page.lastUpdated).toLocaleString(this.$lang)

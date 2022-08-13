@@ -36,7 +36,7 @@ export default {
         <p v-if="item.frontmatter.excerpt">{{ item.frontmatter.excerpt }}</p>
         <p v-if="item.readingTime">Estimated time: {{ item.readingTime.text }}</p>
         <ul class="blog-list__tags">
-            <li v-for="tag in item.frontmatter.tags">
+            <li v-for="tag in item.frontmatter.tags" :key="tag">
                 <a @click="addTag(tag)" class="blog-list__tag">{{ tag }}</a>
             </li>
         </ul>
