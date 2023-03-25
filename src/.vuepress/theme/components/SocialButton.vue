@@ -34,7 +34,7 @@
                     },
                     'linkedin': {
                         'icon': ['fab', 'linkedin'],
-                        'link': 'https://www.linkedin.com/in/~ashraful/'
+                        'link': 'https://www.linkedin.com/in/a5hraful/'
                     },
                     'twitter': {
                         'icon': ['fab', 'twitter-square'],
