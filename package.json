@@ -4,7 +4,7 @@
 	"version": "2.0.2",
 	"license": "MIT",
 	"scripts": {
-		"serve": "vuepress dev src",
+		"dev": "vuepress dev src",
 		"build": "vuepress build src"
 	},
 	"dependencies": {
