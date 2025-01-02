@@ -7,7 +7,7 @@ blog: true
 image: /images/docker-compose.png
 tags:
   - DevOps
-  - Docker
+  - docker
   - docker-compose
   - localhost
   - development

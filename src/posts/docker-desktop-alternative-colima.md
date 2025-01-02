@@ -61,17 +61,15 @@ brew install colima
 brew services start colima
 ```
 
-### Start the colima to start the docker
-
-```bash
-colima start
-```
-
 ### Install docker, docker compose plugin, credentials plugin
 
-```brew install docker docker-compose docker-credential-helper```
+```bash
+brew install docker docker-compose docker-credential-helper
+```
 
 ### Update the docker config file to locate the compose and other plugins. Add the following code blocks to `~/.docker/config.json`
+
+**The following path might not same as me. So, you need to findout your path. Basically they lives under `/usr/local/lib/docker/cli-plugins`**
 
 ```bash
 "cliPluginsExtraDirs": [
@@ -112,12 +110,20 @@ colima start
 }
 ```
 
+### Start the colima to start the docker
+
+```bash
+colima start
+```
+
+**Note: If you need to alter the config then, `colima start --edit`**
+
 ### Run portainer
 
 > If you want to see the logs from a better UI then, I recommend Portainer. Run the below command to install
 
 ```bash
-docker run -d -p 9444:9000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:2.21.5
+docker run -d -p 9444:9000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
 ```
 
 Access from <http://localhost:9444>
