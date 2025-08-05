@@ -3,7 +3,9 @@ title: Fixing DNS Resolution After Disabling systemd-resolved for Pi-hole
 date: 2025-08-05T00:39:48.644Z
 excerpt: After switching my home server's DNS over to Pi-hole, I disabled systemd-resolved to keep all traffic filtered. That’s when things broke — especially for Python apps using dnspython. Here’s how I fixed the DNS chaos by rewriting /etc/resolv.conf.
 type: post
-blog: true
+blog: false
+homeServerSeries: true
+order: 2
 image: /images/pi-hole.png
 tags:
   - pihole
