@@ -49,7 +49,7 @@
   </NuxtLink>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import type { DevtoArticleSummary } from '~/composables/useDevtoApi'
 
 const props = defineProps<{
