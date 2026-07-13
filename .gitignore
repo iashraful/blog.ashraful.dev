@@ -1,11 +1,25 @@
-# Project dependencies
-# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
-node_modules
-.cache/
-# Build directory
-/public
-.DS_Store
-yarn-error.log
-package-lock.json
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
 
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+yarn-error.log
+
+# Misc
+.DS_Store
+.fleet
 .idea
+
+# Environment
+.env
+.env.*
+!.env.example
