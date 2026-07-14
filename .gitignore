@@ -18,6 +18,7 @@ yarn-error.log
 .DS_Store
 .fleet
 .idea
+.worktrees
 
 # Environment
 .env
