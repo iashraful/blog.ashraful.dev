@@ -25,12 +25,15 @@ describe('useDevtoApi requests', () => {
     expect(fetchMock).toHaveBeenCalledWith('/api/devto/articles')
   })
 
-  it('uses the encoded internal article route', async () => {
-    vi.stubGlobal('$fetch', fetchMock.mockResolvedValue({ id: 42 }))
+  it('encodes special characters in the internal slug route', async () => {
+    const slug = 'blog 42/nuxt?'
+    vi.stubGlobal('$fetch', fetchMock.mockResolvedValue({ id: 42, slug }))
 
-    await useDevtoApi().getArticleById('42')
+    await useDevtoApi().getArticleBySlug(slug)
 
-    expect(fetchMock).toHaveBeenCalledWith('/api/devto/articles/42')
+    expect(fetchMock).toHaveBeenCalledWith(
+      `/api/devto/articles/${encodeURIComponent(slug)}`,
+    )
   })
 })
 

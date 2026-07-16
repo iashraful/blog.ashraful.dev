@@ -11,13 +11,21 @@ export default {
   theme: {
     extend: {
       colors: {
+        paper: '#f6f2ea',
+        ink: '#20212a',
+        stone: '#ded8ce',
         accent: {
-          DEFAULT: '#6366f1',
-          hover: '#4f46e5',
+          DEFAULT: '#4338ca',
+          hover: '#3730a3',
         },
+        coral: '#e87963',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['DM Serif Display', 'Georgia', 'serif'],
+      },
+      boxShadow: {
+        editorial: '0 18px 55px rgba(39, 35, 68, 0.10)',
       },
     },
   },

@@ -19,9 +19,9 @@ export function useDevtoApi() {
     return await $fetch<DevtoArticleSummary[]>('/api/devto/articles')
   }
 
-  async function getArticleById(id: string | number): Promise<DevtoArticle> {
+  async function getArticleBySlug(slug: string): Promise<DevtoArticle> {
     return await $fetch<DevtoArticle>(
-      `/api/devto/articles/${encodeURIComponent(String(id))}`,
+      `/api/devto/articles/${encodeURIComponent(slug)}`,
     )
   }
 
@@ -36,7 +36,7 @@ export function useDevtoApi() {
   return {
     getUser,
     getArticles,
-    getArticleById,
+    getArticleBySlug,
     normalizeTags,
   }
 }

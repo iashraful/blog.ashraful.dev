@@ -12,7 +12,7 @@
 
 - Run all commands under Node `22.12.0` via `source "$HOME/.nvm/nvm.sh" && nvm use`.
 - Keep `DEV_TO_API_KEY` in private Nuxt runtime configuration only.
-- Preserve `getUser()`, `getArticles()`, `getArticleById(id)`, and `normalizeTags(tags)` for existing page callers.
+- Preserve `getUser()`, `getArticles()`, `getArticleBySlug(slug)`, and `normalizeTags(tags)` for existing page callers.
 - Do not change page layouts, `useAsyncData` usage, or article presentation.
 - Do not add caching, rate limiting, pagination, or private article controls.
 - Never expose outbound headers, the API key, or raw upstream errors in HTTP responses.
@@ -26,7 +26,7 @@
 - Create `server/utils/devto.ts`: DEV URL construction, authentication, input validation, and sanitized upstream error mapping.
 - Create `server/api/devto/user.get.ts`: public username-based user endpoint.
 - Create `server/api/devto/articles/index.get.ts`: authenticated article-list endpoint.
-- Create `server/api/devto/articles/[id].get.ts`: public article-detail endpoint.
+- Create `server/api/devto/articles/[slug].get.ts`: public article-detail endpoint.
 - Create `tests/server/devto.test.ts`: server DEV client behavior and security tests.
 - Create `tests/composables/useDevtoApi.test.ts`: internal-route and tag-normalization tests.
 - Modify `composables/useDevtoApi.ts`: consume shared types and call internal routes only.
@@ -46,7 +46,7 @@
 - Produces: `DevtoUser`, `DevtoArticleSummary`, and `DevtoArticle` interfaces from `shared/types/devto.ts`.
 - Produces: `getDevtoUser(username: unknown): Promise<DevtoUser>`.
 - Produces: `getDevtoArticles(apiKey: unknown): Promise<DevtoArticleSummary[]>`.
-- Produces: `getDevtoArticle(id: unknown): Promise<DevtoArticle>`.
+- Produces: `getDevtoArticle(username: unknown, slug: unknown): Promise<DevtoArticle>`.
 
 - [ ] **Step 1: Add the test runner**
 
@@ -229,15 +229,15 @@ describe('DEV server client article requests', () => {
   it('fetches a public article without authentication', async () => {
     vi.stubGlobal('$fetch', fetchMock.mockResolvedValue({ id: 42 }))
 
-    await getDevtoArticle('42')
+    await getDevtoArticle('ashraful', 'example-slug')
 
-    expect(fetchMock).toHaveBeenCalledWith('https://dev.to/api/articles/42')
+    expect(fetchMock).toHaveBeenCalledWith('https://dev.to/api/articles/ashraful/example-slug')
   })
 
-  it('rejects a missing article ID before calling DEV', async () => {
-    await expect(getDevtoArticle('')).rejects.toMatchObject({
+  it('rejects a missing article slug before calling DEV', async () => {
+    await expect(getDevtoArticle('ashraful', '')).rejects.toMatchObject({
       statusCode: 400,
-      statusMessage: 'Article ID is required',
+      statusMessage: 'Article slug is required',
     })
     expect(fetchMock).not.toHaveBeenCalled()
   })
@@ -248,7 +248,7 @@ describe('DEV server client article requests', () => {
       message: 'request included server-secret',
     }))
 
-    await expect(getDevtoArticle('404')).rejects.toMatchObject({
+    await expect(getDevtoArticle('ashraful', 'missing-slug')).rejects.toMatchObject({
       statusCode: 404,
       statusMessage: 'Article not found',
     })
@@ -358,17 +358,27 @@ export async function getDevtoArticles(apiKey: unknown): Promise<DevtoArticleSum
   return await fetchDevto<DevtoArticleSummary[]>('/articles/me/published', { apiKey })
 }
 
-export async function getDevtoArticle(id: unknown): Promise<DevtoArticle> {
-  if (typeof id !== 'string' || id.trim().length === 0) {
+export async function getDevtoArticle(username: unknown, slug: unknown): Promise<DevtoArticle> {
+  if (typeof username !== 'string' || username.trim().length === 0) {
     throw createError({
-      statusCode: 400,
-      statusMessage: 'Article ID is required',
+      statusCode: 500,
+      statusMessage: 'DEV username is not configured',
     })
   }
 
-  return await fetchDevto<DevtoArticle>(`/articles/${encodeURIComponent(id)}`, {
-    notFoundMessage: 'Article not found',
-  })
+  if (typeof slug !== 'string' || slug.trim().length === 0) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Article slug is required',
+    })
+  }
+
+  return await fetchDevto<DevtoArticle>(
+    `/articles/${encodeURIComponent(username)}/${encodeURIComponent(slug)}`,
+    {
+      notFoundMessage: 'Article not found',
+    },
+  )
 }
 ```
 
@@ -396,11 +406,11 @@ git commit -m "feat: add secure DEV server client"
 **Files:**
 - Create: `server/api/devto/user.get.ts`
 - Create: `server/api/devto/articles/index.get.ts`
-- Create: `server/api/devto/articles/[id].get.ts`
+- Create: `server/api/devto/articles/[slug].get.ts`
 
 **Interfaces:**
-- Consumes: `getDevtoUser(username: unknown)`, `getDevtoArticles(apiKey: unknown)`, and `getDevtoArticle(id: unknown)` from Task 1.
-- Produces: `GET /api/devto/user`, `GET /api/devto/articles`, and `GET /api/devto/articles/:id`.
+- Consumes: `getDevtoUser(username: unknown)`, `getDevtoArticles(apiKey: unknown)`, and `getDevtoArticle(username: unknown, slug: unknown)` from Task 1.
+- Produces: `GET /api/devto/user`, `GET /api/devto/articles`, and `GET /api/devto/articles/:slug`.
 
 - [ ] **Step 1: Create the public username-based user handler**
 
@@ -430,14 +440,17 @@ export default defineEventHandler(async (event) => {
 
 - [ ] **Step 3: Create the public article-detail handler**
 
-Create `server/api/devto/articles/[id].get.ts`:
+Create `server/api/devto/articles/[slug].get.ts`:
 
 ```ts
 import { getRouterParam } from 'h3'
 import { getDevtoArticle } from '../../../utils/devto'
 
 export default defineEventHandler(async (event) => {
-  return await getDevtoArticle(getRouterParam(event, 'id'))
+  return await getDevtoArticle(
+    useRuntimeConfig(event).public.devToUsername,
+    getRouterParam(event, 'slug'),
+  )
 })
 ```
 
@@ -464,7 +477,7 @@ Expected: PASS with seven tests.
 - [ ] **Step 6: Commit the proxy endpoints**
 
 ```bash
-git add server/api/devto/user.get.ts server/api/devto/articles/index.get.ts 'server/api/devto/articles/[id].get.ts'
+git add server/api/devto/user.get.ts server/api/devto/articles/index.get.ts 'server/api/devto/articles/[slug].get.ts'
 git commit -m "feat: proxy DEV requests through Nitro"
 ```
 
@@ -475,8 +488,8 @@ git commit -m "feat: proxy DEV requests through Nitro"
 - Create: `tests/composables/useDevtoApi.test.ts`
 
 **Interfaces:**
-- Consumes: `GET /api/devto/user`, `GET /api/devto/articles`, and `GET /api/devto/articles/:id` from Task 2.
-- Preserves: `useDevtoApi()` with `getUser`, `getArticles`, `getArticleById`, and `normalizeTags`.
+- Consumes: `GET /api/devto/user`, `GET /api/devto/articles`, and `GET /api/devto/articles/:slug` from Task 2.
+- Preserves: `useDevtoApi()` with `getUser`, `getArticles`, `getArticleBySlug`, and `normalizeTags`.
 
 - [ ] **Step 1: Write failing internal-route tests**
 
@@ -513,9 +526,9 @@ describe('useDevtoApi requests', () => {
   it('uses the encoded internal article route', async () => {
     vi.stubGlobal('$fetch', fetchMock.mockResolvedValue({ id: 42 }))
 
-    await useDevtoApi().getArticleById('42')
+    await useDevtoApi().getArticleBySlug('example-slug')
 
-    expect(fetchMock).toHaveBeenCalledWith('/api/devto/articles/42')
+    expect(fetchMock).toHaveBeenCalledWith('/api/devto/articles/example-slug')
   })
 })
 
@@ -570,9 +583,9 @@ export function useDevtoApi() {
     return await $fetch<DevtoArticleSummary[]>('/api/devto/articles')
   }
 
-  async function getArticleById(id: string | number): Promise<DevtoArticle> {
+  async function getArticleBySlug(slug: string): Promise<DevtoArticle> {
     return await $fetch<DevtoArticle>(
-      `/api/devto/articles/${encodeURIComponent(String(id))}`,
+      `/api/devto/articles/${encodeURIComponent(slug)}`,
     )
   }
 
@@ -587,7 +600,7 @@ export function useDevtoApi() {
   return {
     getUser,
     getArticles,
-    getArticleById,
+    getArticleBySlug,
     normalizeTags,
   }
 }

@@ -1,27 +1,17 @@
 <template>
   <button
+    type="button"
     @click="toggle"
-    class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+    class="size-11 rounded-full border border-stone bg-paper/70 p-2 text-ink transition-colors hover:border-accent hover:bg-white hover:text-accent dark:border-stone/40 dark:bg-ink/70 dark:text-paper dark:hover:border-indigo-300 dark:hover:bg-ink dark:hover:text-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent dark:focus-visible:outline-indigo-300"
     :aria-label="colorMode.value === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+    :title="colorMode.value === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
   >
-    <svg v-if="colorMode.value === 'dark'" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="5" />
-      <line x1="12" y1="1" x2="12" y2="3" />
-      <line x1="12" y1="21" x2="12" y2="23" />
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-      <line x1="1" y1="12" x2="3" y2="12" />
-      <line x1="21" y1="12" x2="23" y2="12" />
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-    </svg>
-    <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-    </svg>
+    <AppIcon v-if="colorMode.value === 'dark'" name="sun" :size="18" />
+    <AppIcon v-else name="moon" :size="18" />
   </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const colorMode = useColorMode()
 
 function toggle() {

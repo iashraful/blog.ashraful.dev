@@ -6,6 +6,10 @@
 .cache
 dist
 
+# AI Agents
+.superpowers
+docs/superpowers/*
+
 # Node dependencies
 node_modules
 

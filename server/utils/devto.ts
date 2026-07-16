@@ -29,6 +29,25 @@ function requireUsername(username: unknown): string {
   return username.trim()
 }
 
+function requireSlug(slug: unknown): string {
+  if (typeof slug !== 'string' || slug.trim().length === 0) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Article slug is required',
+    })
+  }
+
+  const articleSlug = slug
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(articleSlug)) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Article slug is invalid',
+    })
+  }
+
+  return articleSlug
+}
+
 function getUpstreamStatus(error: unknown): number | undefined {
   if (typeof error !== 'object' || error === null) return undefined
 
@@ -87,26 +106,15 @@ export async function getDevtoArticles(apiKey: unknown): Promise<DevtoArticleSum
   return await fetchDevto<DevtoArticleSummary[]>('/articles/me/published', { apiKey })
 }
 
-export async function getDevtoArticle(id: unknown): Promise<DevtoArticle> {
-  const articleId = typeof id === 'string' || typeof id === 'number'
-    ? String(id)
-    : ''
+export async function getDevtoArticle(
+  username: unknown,
+  slug: unknown,
+): Promise<DevtoArticle> {
+  const configuredUsername = requireUsername(username)
+  const articleSlug = requireSlug(slug)
 
-  if (articleId.trim().length === 0) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Article ID is required',
-    })
-  }
-
-  if (!/^[1-9]\d*$/.test(articleId)) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Article ID is invalid',
-    })
-  }
-
-  return await fetchDevto<DevtoArticle>(`/articles/${encodeURIComponent(articleId)}`, {
-    notFoundMessage: 'Article not found',
-  })
+  return await fetchDevto<DevtoArticle>(
+    `/articles/${encodeURIComponent(configuredUsername)}/${encodeURIComponent(articleSlug)}`,
+    { notFoundMessage: 'Article not found' },
+  )
 }

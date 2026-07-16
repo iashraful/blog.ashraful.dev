@@ -4,7 +4,7 @@
 
 **Goal:** Fetch the DEV profile and published article list through public endpoints so client-side requests never need an API key.
 
-**Architecture:** Keep all DEV access in `useDevtoApi`. Replace the two authenticated `me` URLs with fixed public URLs for `ashraful`, remove the now-unused private DEV configuration, and preserve the existing public article-detail request and `useAsyncData` error handling. Add a focused Vitest regression test that captures `$fetch` options and asserts neither public request includes authentication headers.
+**Architecture:** Keep all DEV access in `useDevtoApi`. Replace the two authenticated `me` URLs with fixed public URLs for `ashraful`, remove the now-unused private DEV configuration, and preserve the existing slug-based article-detail request and `useAsyncData` error handling. Add a focused Vitest regression test that captures `$fetch` options and asserts neither public request includes authentication headers.
 
 **Tech Stack:** Nuxt 3, Vue 3 composables, TypeScript, Vitest, Yarn
 
@@ -15,7 +15,7 @@
 - Use `GET https://dev.to/api/articles?username=ashraful` for article-list data.
 - Do not expose or require `DEV_TO_API_KEY` for any browser-facing request.
 - Remove the unused private `DEV_TO_API_KEY` runtime configuration and example.
-- Preserve public `GET /api/articles/{id}` article-detail behavior.
+- Preserve public `GET https://dev.to/api/articles/{username}/{slug}` article-detail behavior.
 
 ---
 
@@ -134,7 +134,7 @@ async function getArticles(): Promise<DevtoArticleSummary[]> {
 }
 ```
 
-Do not change `getArticleById()` or tag normalization.
+Do not change `getArticleBySlug(slug)` or tag normalization.
 
 - [ ] **Step 4: Remove unused API-key configuration**
 

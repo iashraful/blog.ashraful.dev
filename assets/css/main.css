@@ -1,68 +1,116 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  html {
+    @apply bg-paper;
+  }
+
   body {
-    @apply bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300;
+    @apply min-h-screen bg-paper text-ink transition-colors duration-300 dark:bg-ink dark:text-paper;
+    background-image: radial-gradient(circle at 15% 0%, rgba(232, 121, 99, 0.09), transparent 30rem);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-normal tracking-tight;
+  }
+
+  :focus-visible {
+    @apply outline outline-2 outline-offset-4 outline-accent;
+  }
+
+  .dark :focus-visible {
+    @apply outline-indigo-300;
   }
 }
 
 @layer components {
   .prose-devto {
-    @apply max-w-none text-slate-800 dark:text-slate-200 leading-relaxed;
+    @apply max-w-none leading-relaxed text-ink dark:text-paper;
   }
+
   .prose-devto h1 {
-    @apply text-3xl font-bold mt-8 mb-4;
+    @apply mb-4 mt-8 font-display text-4xl;
   }
+
   .prose-devto h2 {
-    @apply text-2xl font-bold mt-6 mb-3;
+    @apply mb-3 mt-8 font-display text-3xl;
   }
+
   .prose-devto h3 {
-    @apply text-xl font-semibold mt-5 mb-2;
+    @apply mb-2 mt-6 font-display text-2xl;
   }
+
   .prose-devto p {
     @apply my-4;
   }
+
   .prose-devto a {
-    @apply text-accent hover:text-accent-hover underline;
+    @apply text-accent underline decoration-coral decoration-2 underline-offset-2 hover:text-accent-hover dark:text-indigo-300 dark:hover:text-indigo-200;
   }
+
   .prose-devto ul {
-    @apply list-disc pl-6 my-4;
+    @apply my-4 list-disc pl-6;
   }
+
   .prose-devto ol {
-    @apply list-decimal pl-6 my-4;
+    @apply my-4 list-decimal pl-6;
   }
+
   .prose-devto li {
     @apply my-1;
   }
+
   .prose-devto code {
-    @apply bg-slate-100 dark:bg-slate-800 rounded px-1.5 py-0.5 text-sm font-mono;
+    @apply rounded border border-stone bg-white/50 px-1.5 py-0.5 font-mono text-sm dark:bg-black/20;
   }
+
   .prose-devto pre {
-    @apply bg-slate-100 dark:bg-slate-800 rounded-lg p-4 overflow-x-auto my-4;
+    @apply my-6 overflow-x-auto rounded border border-stone bg-ink p-5 text-paper shadow-editorial;
   }
+
   .prose-devto pre code {
-    @apply bg-transparent p-0;
+    @apply border-0 bg-transparent p-0;
   }
+
   .prose-devto blockquote {
-    @apply border-l-4 border-accent pl-4 italic my-4 text-slate-600 dark:text-slate-400;
+    @apply my-6 border-l-4 border-coral pl-4 italic text-ink/70 dark:text-paper/70;
   }
+
   .prose-devto img {
-    @apply rounded-lg my-4 max-w-full h-auto;
+    @apply my-6 h-auto max-w-full rounded border border-stone;
   }
+
   .prose-devto hr {
-    @apply my-8 border-slate-200 dark:border-slate-700;
+    @apply my-8 border-stone;
   }
+
   .prose-devto table {
-    @apply w-full my-4 border-collapse;
+    @apply my-6 block w-full overflow-x-auto border-collapse;
   }
+
   .prose-devto th {
-    @apply border border-slate-300 dark:border-slate-600 px-4 py-2 bg-slate-100 dark:bg-slate-800 font-semibold;
+    @apply border border-stone bg-stone/40 px-4 py-2 text-left font-semibold;
   }
+
   .prose-devto td {
-    @apply border border-slate-300 dark:border-slate-600 px-4 py-2;
+    @apply border border-stone px-4 py-2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }

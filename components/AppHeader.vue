@@ -1,14 +1,18 @@
 <template>
-  <header class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-      <NuxtLink to="/" class="text-xl font-bold text-slate-900 dark:text-white hover:text-accent transition-colors">
-        Ashraful's Blog
+  <header class="sticky top-0 z-50 border-b border-stone/80 bg-paper/90 backdrop-blur-md dark:bg-ink/90">
+    <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4">
+      <NuxtLink to="/" class="group flex min-w-0 items-center gap-3 rounded-md" aria-label="Ashraful's Blog home">
+        <span class="brand-mark shrink-0" aria-hidden="true"><span /></span>
+        <span class="min-w-0">
+          <span class="block truncate text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-accent dark:text-indigo-300">FIELD NOTES</span>
+          <span class="block truncate font-display text-xl leading-tight text-ink transition-colors group-hover:text-accent dark:text-paper dark:group-hover:text-indigo-300 sm:text-2xl">Ashraful’s Blog</span>
+        </span>
       </NuxtLink>
-      <nav class="flex items-center gap-2 sm:gap-4">
-        <NuxtLink to="/" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-accent transition-colors">
+      <nav class="flex shrink-0 items-center gap-1 rounded-full border border-stone/80 bg-white/50 p-1 dark:border-stone/40 dark:bg-black/10" aria-label="Primary navigation">
+        <NuxtLink to="/" exact-active-class="bg-ink !text-paper dark:bg-paper dark:!text-ink" class="min-h-11 min-w-11 rounded-full px-3 py-2 text-xs font-semibold text-ink/65 transition-colors hover:text-accent dark:hover:text-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:focus-visible:outline-indigo-300 dark:text-paper/70 sm:px-4 sm:text-sm">
           Home
         </NuxtLink>
-        <NuxtLink to="/about" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-accent transition-colors">
+        <NuxtLink to="/about" active-class="bg-ink !text-paper dark:bg-paper dark:!text-ink" class="min-h-11 min-w-11 rounded-full px-3 py-2 text-xs font-semibold text-ink/65 transition-colors hover:text-accent dark:hover:text-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:focus-visible:outline-indigo-300 dark:text-paper/70 sm:px-4 sm:text-sm">
           About
         </NuxtLink>
         <ThemeToggle />
@@ -16,3 +20,28 @@
     </div>
   </header>
 </template>
+
+<style scoped>
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid theme('colors.coral');
+  border-radius: 9999px;
+  background: theme('colors.ink');
+  transform: rotate(-8deg);
+}
+
+.brand-mark span {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 0.2rem;
+  background: theme('colors.coral');
+  transform: rotate(22deg);
+}
+
+:global(.dark) .brand-mark {
+  background: theme('colors.paper');
+}
+</style>

@@ -32,9 +32,9 @@ A personal blog site built with Nuxt 3 that mirrors articles from dev.to for use
 
 | Endpoint | Auth | Purpose |
 |---|---|---|
-| `GET /api/users/me` | API key | Fetch user profile (name, bio, avatar) |
-| `GET /api/articles/me/all` | API key | Fetch all published articles for the user |
-| `GET /api/articles/{id}` | Public | Fetch single article by ID (full `body_html`) |
+| `GET /api/users/by_username?url={username}` | Public | Fetch user profile (name, bio, avatar) |
+| `GET /api/articles/me/published` | API key | Fetch all published articles for the user |
+| `GET /api/articles/{username}/{slug}` | Public | Fetch single article by slug (full `body_html`) |
 
 ### API Key Handling
 
@@ -46,7 +46,7 @@ A personal blog site built with Nuxt 3 that mirrors articles from dev.to for use
 
 - Homepage uses `useAsyncData` (SSR) to fetch user profile + article list
 - Article list returns: id, title, description, cover_image, published_at, tags, reading_time_minutes
-- Article page fetches single article by ID, renders `body_html` with `v-html` in a styled prose container
+- Article page fetches a single article by slug, renders `body_html` with `v-html` in a styled prose container
 - Nitro handles request deduplication; no aggressive caching (live SSR as chosen)
 
 ## Pages
@@ -56,7 +56,7 @@ A personal blog site built with Nuxt 3 that mirrors articles from dev.to for use
 - **Hero section**: Avatar from dev.to profile, name, bio/tagline — centered, large bold typography, subtle gradient background accent
 - **Article grid**: Responsive (1 col mobile, 2 col tablet, 3 col desktop). Each card: cover image (or gradient placeholder), title, description excerpt, tags as pills, published date, reading time
 
-### `/article/[id]` — Article Page
+### `/article/[slug]` — Article Page
 
 - Back link to home
 - Article title (large, bold), meta line (date, reading time, tags)
@@ -131,7 +131,7 @@ blog.ashraful.dev/
 │   ├── index.vue
 │   ├── about.vue
 │   └── article/
-│       └── [id].vue
+│       └── [slug].vue
 └── error.vue
 ```
 

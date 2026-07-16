@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex items-center justify-center px-4">
     <div class="text-center">
-      <h1 class="text-6xl font-extrabold text-accent mb-4">{{ error?.statusCode || 500 }}</h1>
+      <h1 class="text-6xl font-extrabold text-accent dark:text-indigo-300 mb-4">{{ error?.statusCode || 500 }}</h1>
       <p class="text-xl text-slate-700 dark:text-slate-300 mb-2">
         {{ error?.statusCode === 404 ? "This page doesn't exist." : 'Something went wrong.' }}
       </p>

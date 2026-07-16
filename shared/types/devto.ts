@@ -14,6 +14,7 @@ export interface DevtoUser {
 export interface DevtoArticleSummary {
   id: number
   title: string
+  slug: string
   description: string
   cover_image: string | null
   social_image: string | null

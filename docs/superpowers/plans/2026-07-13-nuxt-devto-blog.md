@@ -6,6 +6,8 @@
 
 **Architecture:** Nuxt 3 SSR app using `useAsyncData` to fetch from dev.to API at request time. TailwindCSS for styling, `@nuxtjs/color-mode` for theme toggle. A single composable centralizes all API calls.
 
+> **Current route contract:** The original scaffold steps below record the initial ID-based implementation intent. Current article routes are `/article/<slug>`, the composable method is `getArticleBySlug(slug)`, and public article details use DEV's username-plus-slug endpoint.
+
 **Tech Stack:** Nuxt 3, TailwindCSS (`@nuxtjs/tailwindcss`), `@nuxtjs/color-mode`, dev.to Forem API v1
 
 ## Global Constraints
@@ -44,7 +46,7 @@ blog.ashraful.dev/
 │   ├── ThemeToggle.vue     # Sun/moon toggle
 │   └── ErrorBanner.vue     # Error message + retry
 ├── composables/
-│   └── useDevtoApi.ts      # getUser(), getArticles(), getArticleById()
+│   └── useDevtoApi.ts      # getUser(), getArticles(), getArticleBySlug()
 ├── layouts/
 │   └── default.vue         # AppHeader + slot + AppFooter
 ├── pages/

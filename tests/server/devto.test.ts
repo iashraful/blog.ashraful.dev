@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { readFileSync } from 'node:fs'
 import {
   getDevtoArticle,
   getDevtoArticles,
@@ -51,31 +52,31 @@ describe('DEV server client requests', () => {
 })
 
 describe('DEV server client article requests', () => {
-  it('fetches a public article without authentication', async () => {
+  it('fetches a public article by encoded username and slug without authentication', async () => {
     vi.stubGlobal('$fetch', fetchMock.mockResolvedValue({ id: 42 }))
 
-    await getDevtoArticle('42')
+    await getDevtoArticle('ashraful name', 'building-a-blog-42')
 
-    expect(fetchMock).toHaveBeenCalledWith('https://dev.to/api/articles/42')
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://dev.to/api/articles/ashraful%20name/building-a-blog-42',
+    )
   })
 
-  it('rejects a missing article ID before calling DEV', async () => {
-    await expect(getDevtoArticle('')).rejects.toMatchObject({
+  it.each(['', '   '])('rejects a missing slug %j before calling DEV', async (slug) => {
+    await expect(getDevtoArticle('ashraful', slug)).rejects.toMatchObject({
       statusCode: 400,
-      statusMessage: 'Article ID is required',
+      statusMessage: 'Article slug is required',
     })
     expect(fetchMock).not.toHaveBeenCalled()
   })
 
-  it.each(['abc', '-1', '0', '1.5', '   '])(
-    'rejects malformed article ID %j before calling DEV',
-    async (id) => {
-      await expect(getDevtoArticle(id)).rejects.toMatchObject({
-        statusCode: 400,
-      })
-      expect(fetchMock).not.toHaveBeenCalled()
-    },
-  )
+  it.each(['../x', '?', 'building-a-blog-\u0000-42'])('rejects a malformed nonblank slug %j before calling DEV', async (slug) => {
+    await expect(getDevtoArticle('ashraful', slug)).rejects.toMatchObject({
+      statusCode: 400,
+      statusMessage: 'Article slug is invalid',
+    })
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
 
   it('maps an upstream article 404 to a sanitized response', async () => {
     vi.stubGlobal('$fetch', fetchMock.mockRejectedValue({
@@ -83,7 +84,7 @@ describe('DEV server client article requests', () => {
       message: 'request included server-secret',
     }))
 
-    await expect(getDevtoArticle('404')).rejects.toMatchObject({
+    await expect(getDevtoArticle('ashraful', 'missing-article')).rejects.toMatchObject({
       statusCode: 404,
       statusMessage: 'Article not found',
     })
@@ -118,5 +119,16 @@ describe('DEV user handler configuration', () => {
     expect(fetchMock).toHaveBeenCalledWith(
       'https://dev.to/api/users/by_username?url=ashraful',
     )
+  })
+})
+
+describe('DEV article handler configuration', () => {
+  it('reads the public username and forwards only the route slug', () => {
+    const handler = readFileSync(new URL('../../server/api/devto/articles/[slug].get.ts', import.meta.url), 'utf8')
+
+    expect(handler).toContain('config.public.devToUsername')
+    expect(handler).toContain("getRouterParam(event, 'slug')")
+    expect(handler).toContain("getDevtoArticle(\n    config.public.devToUsername,\n    getRouterParam(event, 'slug'),\n  )")
+    expect(handler).not.toContain('config.devToApiKey')
   })
 })
