@@ -104,7 +104,45 @@
   }
 }
 
+.editorial-page-enter-active,
+.editorial-page-leave-active {
+  transition: opacity 180ms ease, transform 180ms ease, filter 180ms ease;
+}
+
+.editorial-page-enter-from {
+  opacity: 0;
+  filter: blur(2px);
+  transform: translateY(0.35rem);
+}
+
+.editorial-page-leave-to {
+  opacity: 0;
+  filter: blur(2px);
+}
+
+.nuxt-loading-indicator {
+  top: 4.75rem;
+  z-index: 40;
+}
+
+@media (min-width: 640px) {
+  .nuxt-loading-indicator {
+    top: 5.25rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .editorial-page-enter-active,
+  .editorial-page-leave-active {
+    transition: none;
+  }
+
+  .editorial-page-enter-from,
+  .editorial-page-leave-to {
+    transform: none;
+    filter: blur(0);
+  }
+
   *,
   *::before,
   *::after {

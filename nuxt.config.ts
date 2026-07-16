@@ -18,6 +18,9 @@ export default defineNuxtConfig({
       devToUsername: 'ashraful',
     },
   },
+  pageTransition: {
+    name: 'editorial-page',
+  },
   app: {
     head: {
       title: "Ashraful's Blog",

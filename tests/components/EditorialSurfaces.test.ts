@@ -37,6 +37,47 @@ describe('editorial homepage surfaces', () => {
   })
 })
 
+describe('editorial navigation feedback', () => {
+  it('mounts the global navigation indicator before the layout', () => {
+    const app = source('app.vue')
+
+    expect(app).toContain('<NuxtLoadingIndicator')
+    expect(app.indexOf('<NuxtLoadingIndicator')).toBeLessThan(app.indexOf('<NuxtLayout'))
+  })
+
+  it('configures the editorial page transition', () => {
+    const config = source('nuxt.config.ts')
+
+    expect(config).toContain("name: 'editorial-page'")
+    expect(config).toContain('pageTransition')
+  })
+
+  it('defines reduced-motion-safe transition classes', () => {
+    const css = source('assets/css/main.css')
+
+    expect(css).toContain('.editorial-page-enter-active')
+    expect(css).toContain('.editorial-page-leave-active')
+    expect(css).toContain('prefers-reduced-motion: reduce')
+  })
+
+  it('adds a subtle blur to navigation transition states', () => {
+    const css = source('assets/css/main.css')
+
+    expect(css).toContain('filter: blur(2px)')
+    expect(css).toContain('filter: blur(0)')
+  })
+
+  it('places the loading indicator beneath the responsive masthead', () => {
+    const css = source('assets/css/main.css')
+
+    expect(css).toContain('.nuxt-loading-indicator')
+    expect(css).toContain('top: 4.75rem')
+    expect(css).toContain('@media (min-width: 640px)')
+    expect(css).toContain('top: 5.25rem')
+    expect(css).toContain('z-index: 40')
+  })
+})
+
 describe('editorial accent treatments', () => {
   it('keeps prose links readable on dark surfaces', () => {
     const css = source('assets/css/main.css')
