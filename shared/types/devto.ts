@@ -20,6 +20,8 @@ export interface DevtoArticleSummary {
   social_image: string | null
   published_at: string
   reading_time_minutes: number
+  positive_reactions_count: number
+  comments_count: number
   tag_list: string | string[]
   path: string
   url: string

@@ -162,6 +162,13 @@ describe('editorial article card surface', () => {
     expect(card).not.toContain('text-ink/65 dark:text-paper/65')
   })
 
+  it('shows public reaction and comment counts', () => {
+    const card = source('components/ArticleCard.vue')
+
+    expect(card).toContain('article.positive_reactions_count')
+    expect(card).toContain('article.comments_count')
+  })
+
   it('links each card tag to its encoded archive outside the article route link', () => {
     const card = source('components/ArticleCard.vue')
 
@@ -230,6 +237,13 @@ describe('editorial article reader surface', () => {
     expect(article).toContain('text-ink/80 dark:text-paper/80')
     expect(article).toContain('min-h-11')
     expect(article).toContain('py-2')
+  })
+
+  it('shows public reaction and comment counts in article metadata', () => {
+    const article = source('pages/article/[slug].vue')
+
+    expect(article).toContain('article.positive_reactions_count')
+    expect(article).toContain('article.comments_count')
   })
 })
 

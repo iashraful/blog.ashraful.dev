@@ -44,6 +44,12 @@
           <AppIcon name="clock" :size="16" />
           {{ article.reading_time_minutes }} min read
         </span>
+        <span class="inline-flex items-center gap-2">
+          {{ article.positive_reactions_count }} reactions
+        </span>
+        <span class="inline-flex items-center gap-2">
+          {{ article.comments_count }} comments
+        </span>
         <span v-if="tags.length > 0" class="flex flex-wrap gap-1.5">
           <span
             v-for="tag in tags"

@@ -46,6 +46,8 @@
       <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-ink/75 dark:text-paper/75">
         <span class="inline-flex items-center gap-1.5"><AppIcon name="calendar" :size="14" />{{ formatDate(article.published_at) }}</span>
         <span class="inline-flex items-center gap-1.5"><AppIcon name="clock" :size="14" />{{ article.reading_time_minutes }} min read</span>
+        <span class="inline-flex items-center gap-1.5">{{ article.positive_reactions_count }} reactions</span>
+        <span class="inline-flex items-center gap-1.5">{{ article.comments_count }} comments</span>
       </div>
     </div>
   </article>
