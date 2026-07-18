@@ -78,16 +78,67 @@
           :article="article"
         />
       </div>
+
+      <div v-if="articles.length > 0 && hasMore" class="mt-10 text-center">
+        <button
+          type="button"
+          class="min-h-11 rounded-full border border-stone px-5 py-2 text-sm font-semibold transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-60 dark:hover:text-indigo-300"
+          :disabled="isLoadingMore"
+          @click="loadMore"
+        >
+          {{ isLoadingMore ? 'Loading more articles' : 'Load more' }}
+        </button>
+        <ErrorBanner
+          v-if="loadMoreError"
+          class="mt-4 text-left"
+          message="Couldn't load more articles. Please try again."
+          @retry="loadMore"
+        />
+      </div>
     </section>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { DevtoArticleSummary } from '~/shared/types/devto'
+import { appendArticlePage, hasNextPage } from '~/composables/useArticlePagination'
+
 const { getUser, getArticles } = useDevtoApi()
 
-const { data: user, error: userError } = await useAsyncData('devto-user', () => getUser())
+const { data: user } = await useAsyncData('devto-user', () => getUser())
 
-const { data: articles, error, pending, refresh } = await useAsyncData('devto-articles', () => getArticles())
+const { data: firstPage, error, pending, refresh } = await useAsyncData('devto-articles', () => getArticles(1))
 
-const articleCount = computed(() => articles.value?.length || 0)
+const articles = ref<DevtoArticleSummary[]>([])
+const page = ref(1)
+const hasMore = ref(true)
+const isLoadingMore = ref(false)
+const loadMoreError = ref(false)
+
+watch(firstPage, (value) => {
+  articles.value = value || []
+  page.value = 1
+  hasMore.value = hasNextPage(value || [])
+}, { immediate: true })
+
+async function loadMore() {
+  isLoadingMore.value = true
+  loadMoreError.value = false
+
+  try {
+    const nextPage = page.value + 1
+    const nextArticles = await getArticles(nextPage)
+    articles.value = appendArticlePage(articles.value, nextArticles)
+    page.value = nextPage
+    hasMore.value = hasNextPage(nextArticles)
+  }
+  catch {
+    loadMoreError.value = true
+  }
+  finally {
+    isLoadingMore.value = false
+  }
+}
+
+const articleCount = computed(() => articles.value.length)
 </script>

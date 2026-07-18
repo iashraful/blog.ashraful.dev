@@ -1,12 +1,14 @@
 import type {
   DevtoArticle,
   DevtoArticleSummary,
+  DevtoFollower,
   DevtoUser,
 } from '../shared/types/devto'
 
 export type {
   DevtoArticle,
   DevtoArticleSummary,
+  DevtoFollower,
   DevtoUser,
 } from '../shared/types/devto'
 
@@ -15,8 +17,18 @@ export function useDevtoApi() {
     return await $fetch<DevtoUser>('/api/devto/user')
   }
 
-  async function getArticles(): Promise<DevtoArticleSummary[]> {
-    return await $fetch<DevtoArticleSummary[]>('/api/devto/articles')
+  async function getArticles(page = 1): Promise<DevtoArticleSummary[]> {
+    return await $fetch<DevtoArticleSummary[]>(`/api/devto/articles?page=${page}`)
+  }
+
+  async function getArticlesByTag(tag: string, page = 1): Promise<DevtoArticleSummary[]> {
+    return await $fetch<DevtoArticleSummary[]>(
+      `/api/devto/tags/${encodeURIComponent(tag)}?page=${page}`,
+    )
+  }
+
+  async function getFollowers(): Promise<DevtoFollower[]> {
+    return await $fetch<DevtoFollower[]>('/api/devto/followers')
   }
 
   async function getArticleBySlug(slug: string): Promise<DevtoArticle> {
@@ -36,6 +48,8 @@ export function useDevtoApi() {
   return {
     getUser,
     getArticles,
+    getArticlesByTag,
+    getFollowers,
     getArticleBySlug,
     normalizeTags,
   }

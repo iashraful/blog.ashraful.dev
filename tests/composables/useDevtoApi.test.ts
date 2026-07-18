@@ -17,12 +17,20 @@ describe('useDevtoApi requests', () => {
     expect(fetchMock).toHaveBeenCalledWith('/api/devto/user')
   })
 
-  it('uses the internal articles route', async () => {
+  it('uses the internal paginated articles route', async () => {
     vi.stubGlobal('$fetch', fetchMock.mockResolvedValue([]))
 
-    await useDevtoApi().getArticles()
+    await useDevtoApi().getArticles(2)
 
-    expect(fetchMock).toHaveBeenCalledWith('/api/devto/articles')
+    expect(fetchMock).toHaveBeenCalledWith('/api/devto/articles?page=2')
+  })
+
+  it('uses an encoded paginated tag archive route', async () => {
+    vi.stubGlobal('$fetch', fetchMock.mockResolvedValue([]))
+
+    await useDevtoApi().getArticlesByTag('vue-nuxt', 3)
+
+    expect(fetchMock).toHaveBeenCalledWith('/api/devto/tags/vue-nuxt?page=3')
   })
 
   it('encodes special characters in the internal slug route', async () => {

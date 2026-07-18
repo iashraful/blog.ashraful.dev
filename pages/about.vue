@@ -84,14 +84,67 @@
            <AppIcon name="external" :size="17" class="text-ink/75 dark:text-paper/75 group-hover:text-accent dark:group-hover:text-indigo-300" />
         </a>
       </div>
+
+      <section class="mt-14 border-t border-stone pt-8">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-3xl">Followers</h2>
+            <p v-if="followers" class="mt-1 text-sm text-ink/75 dark:text-paper/75">
+              {{ followers.length }} {{ followers.length === 1 ? 'follower' : 'followers' }}
+            </p>
+          </div>
+          <button
+            v-if="followers && followers.length > 0"
+            type="button"
+            class="min-h-11 rounded-full border border-stone px-4 py-2 text-sm font-semibold transition-colors hover:border-accent hover:text-accent dark:hover:text-indigo-300"
+            :aria-expanded="showFollowers"
+            aria-controls="follower-list"
+            @click="showFollowers = !showFollowers"
+          >
+            {{ showFollowers ? 'Hide followers' : 'Show followers' }}
+          </button>
+        </div>
+
+        <div v-if="followersPending" class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <div v-for="i in 6" :key="i" class="h-16 animate-pulse rounded-xl bg-stone/50 dark:bg-white/10" />
+        </div>
+
+        <p v-else-if="followersError" class="mt-6 text-sm text-ink/75 dark:text-paper/75">
+          Couldn't load followers.
+        </p>
+
+        <p v-else-if="followers && followers.length === 0" class="mt-6 text-sm text-ink/75 dark:text-paper/75">
+          No followers yet.
+        </p>
+
+        <div v-else-if="showFollowers && followers" id="follower-list" class="mt-6 grid max-h-96 grid-cols-1 gap-3 overflow-y-auto pr-2 sm:grid-cols-2">
+          <a
+            v-for="follower in followers"
+            :key="follower.id"
+            :href="`https://dev.to${follower.path}`"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex items-center gap-3 rounded-xl border border-stone p-3 transition-colors hover:border-accent hover:bg-accent/5"
+          >
+            <img :src="follower.profile_image" :alt="follower.name" class="size-10 rounded-full object-cover" />
+            <span class="min-w-0 truncate font-semibold text-ink dark:text-paper">{{ follower.name }}</span>
+            <AppIcon name="arrow-up-right" :size="16" class="ml-auto shrink-0 text-ink/75 group-hover:text-accent dark:text-paper/75 dark:group-hover:text-indigo-300" />
+          </a>
+        </div>
+      </section>
     </div>
   </div>
 </template>
 
 <script setup>
-const { getUser } = useDevtoApi()
+const { getFollowers, getUser } = useDevtoApi()
 
 const { data: user, error, pending, refresh } = await useAsyncData('devto-user-about', () => getUser())
+const { data: followers, error: followersError, pending: followersPending } = await useAsyncData(
+  'devto-followers',
+  () => getFollowers(),
+)
+const showFollowers = ref(false)
 
 useHead({
   title: "About — Ashraful's Blog",

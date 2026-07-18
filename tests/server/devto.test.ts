@@ -3,6 +3,8 @@ import { readFileSync } from 'node:fs'
 import {
   getDevtoArticle,
   getDevtoArticles,
+  getDevtoArticlesByTag,
+  getDevtoFollowers,
   getDevtoUser,
 } from '../../server/utils/devto'
 
@@ -27,15 +29,52 @@ describe('DEV server client requests', () => {
   it('fetches authenticated published articles with the private API key', async () => {
     vi.stubGlobal('$fetch', fetchMock.mockResolvedValue([]))
 
-    await getDevtoArticles('server-secret')
+    await getDevtoArticles('server-secret', 1)
 
-    expect(fetchMock).toHaveBeenCalledWith('https://dev.to/api/articles/me/published', {
+    expect(fetchMock).toHaveBeenCalledWith('https://dev.to/api/articles/me/published?page=1&per_page=12', {
       headers: { 'api-key': 'server-secret' },
     })
   })
 
+  it('fetches a requested page of the authenticated user\'s published articles', async () => {
+    vi.stubGlobal('$fetch', fetchMock.mockResolvedValue([]))
+
+    await getDevtoArticles('server-secret', 2)
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://dev.to/api/articles/me/published?page=2&per_page=12',
+      { headers: { 'api-key': 'server-secret' } },
+    )
+  })
+
+  it.each([undefined, '', '0', '1.5', '-1', 'words'])('rejects invalid article page %j before calling DEV', async (page) => {
+    await expect(getDevtoArticles('server-secret', page)).rejects.toMatchObject({
+      statusCode: 400,
+      statusMessage: 'Article page is invalid',
+    })
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('fetches an exact tag archive for the configured username', async () => {
+    vi.stubGlobal('$fetch', fetchMock.mockResolvedValue([]))
+
+    await getDevtoArticlesByTag('ashraful islam', 'vue-nuxt', 3)
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://dev.to/api/articles?username=ashraful%20islam&tag=vue-nuxt&page=3&per_page=12',
+    )
+  })
+
+  it.each(['', '   ', '../x', 'tag/with/slash'])('rejects invalid tags before calling DEV', async (tag) => {
+    await expect(getDevtoArticlesByTag('ashraful', tag, 1)).rejects.toMatchObject({
+      statusCode: 404,
+      statusMessage: 'Tag not found',
+    })
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
   it('rejects a whitespace-only API key before calling DEV', async () => {
-    await expect(getDevtoArticles('   ')).rejects.toMatchObject({
+    await expect(getDevtoArticles('   ', 1)).rejects.toMatchObject({
       statusCode: 500,
       statusMessage: 'DEV API is not configured',
     })
@@ -48,6 +87,26 @@ describe('DEV server client requests', () => {
       statusMessage: 'DEV username is not configured',
     })
     expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('fetches every page of followers with the private API key', async () => {
+    const firstPage = Array.from({ length: 1000 }, (_, id) => ({ id }))
+    const lastPage = [{ id: 1000 }]
+    vi.stubGlobal('$fetch', fetchMock
+      .mockResolvedValueOnce(firstPage)
+      .mockResolvedValueOnce(lastPage))
+
+    await expect(getDevtoFollowers('server-secret')).resolves.toEqual([...firstPage, ...lastPage])
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      1,
+      'https://dev.to/api/followers/users?page=1&per_page=1000&sort=-created_at',
+      { headers: { 'api-key': 'server-secret' } },
+    )
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      'https://dev.to/api/followers/users?page=2&per_page=1000&sort=-created_at',
+      { headers: { 'api-key': 'server-secret' } },
+    )
   })
 })
 
@@ -130,6 +189,28 @@ describe('DEV article handler configuration', () => {
     expect(handler).toContain("getRouterParam(event, 'slug')")
     expect(handler).toContain("getDevtoArticle(\n    config.public.devToUsername,\n    getRouterParam(event, 'slug'),\n  )")
     expect(handler).not.toContain('config.devToApiKey')
+  })
+
+  it('forwards the page query to the owner article client', () => {
+    const handler = readFileSync(new URL('../../server/api/devto/articles/index.get.ts', import.meta.url), 'utf8')
+
+    expect(handler).toContain('getQuery(event).page')
+    expect(handler).toContain('getDevtoArticles(config.devToApiKey,')
+  })
+
+  it('forwards the tag route and page query to the public tag client', () => {
+    const handler = readFileSync(new URL('../../server/api/devto/tags/[tag].get.ts', import.meta.url), 'utf8')
+
+    expect(handler).toContain("getRouterParam(event, 'tag')")
+    expect(handler).toContain('config.public.devToUsername')
+    expect(handler).toContain('getQuery(event).page')
+  })
+
+  it('keeps follower requests server-side with the private API key', () => {
+    const handler = readFileSync(new URL('../../server/api/devto/followers.get.ts', import.meta.url), 'utf8')
+
+    expect(handler).toContain('getDevtoFollowers(config.devToApiKey)')
+    expect(handler).not.toContain('config.public')
   })
 })
 

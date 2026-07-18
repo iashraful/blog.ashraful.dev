@@ -161,6 +161,47 @@ describe('editorial article card surface', () => {
     expect(card).not.toContain('text-ink/55 dark:text-paper/55')
     expect(card).not.toContain('text-ink/65 dark:text-paper/65')
   })
+
+  it('links each card tag to its encoded archive outside the article route link', () => {
+    const card = source('components/ArticleCard.vue')
+
+    expect(card).toContain('<article')
+    expect(card).toContain(':to="`/article/${encodeURIComponent(article.slug)}`"')
+    expect(card).toContain(':to="`/tags/${encodeURIComponent(tag)}`"')
+  })
+})
+
+describe('homepage pagination', () => {
+  it('appends older articles through a Load more control', () => {
+    const homepage = source('pages/index.vue')
+
+    expect(homepage).toContain('appendArticlePage')
+    expect(homepage).toContain('hasNextPage')
+    expect(homepage).toContain('loadMore')
+    expect(homepage).toContain('Load more')
+    expect(homepage).toContain('Loading more articles')
+  })
+})
+
+describe('tag archive page', () => {
+  it('loads the route tag with the dedicated API client and article cards', () => {
+    const archive = source('pages/tags/[tag].vue')
+
+    expect(archive).toContain('route.params.tag')
+    expect(archive).toContain('decodeURIComponent')
+    expect(archive).toContain('getArticlesByTag')
+    expect(archive).toContain('v-for="article in articles"')
+    expect(archive).toContain('<ArticleCard')
+  })
+
+  it('provides tag archive empty, error, and Load more states', () => {
+    const archive = source('pages/tags/[tag].vue')
+
+    expect(archive).toContain('No articles use #{{ tag }} yet.')
+    expect(archive).toContain("Couldn't load articles. Please try again.")
+    expect(archive).toContain('Load more')
+    expect(archive).toContain('Back to articles')
+  })
 })
 
 describe('editorial article reader surface', () => {
@@ -221,6 +262,23 @@ describe('editorial about surface', () => {
     expect(about).toContain('text-ink/75 dark:text-paper/75')
     expect(about).toContain('text-ink/75 dark:text-paper/75')
     expect(about).not.toContain('text-ink/60 dark:text-paper/60')
+  })
+
+  it('places a count-first follower section after profile links', () => {
+    const about = source('pages/about.vue')
+
+    expect(about).toContain('getFollowers')
+    expect(about).toContain('followers.length')
+    expect(about).toContain('showFollowers')
+    expect(about).toContain('Show followers')
+    expect(about).toContain('Hide followers')
+    expect(about).toContain('v-else-if="showFollowers && followers"')
+    expect(about).toContain('max-h-96')
+    expect(about).toContain('overflow-y-auto')
+    expect(about).toContain('v-for="follower in followers"')
+    expect(about).toContain(':href="`https://dev.to${follower.path}`"')
+    expect(about).toContain("Couldn't load followers.")
+    expect(about.indexOf('<!-- Links -->')).toBeLessThan(about.indexOf('<h2 class="text-3xl">Followers</h2>'))
   })
 })
 

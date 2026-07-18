@@ -31,3 +31,11 @@ export interface DevtoArticle extends DevtoArticleSummary {
   slug: string
   tags: string | string[]
 }
+
+export interface DevtoFollower {
+  id: number
+  user_id: number
+  name: string
+  path: string
+  profile_image: string
+}

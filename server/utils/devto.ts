@@ -2,10 +2,13 @@ import { createError } from 'h3'
 import type {
   DevtoArticle,
   DevtoArticleSummary,
+  DevtoFollower,
   DevtoUser,
 } from '../../shared/types/devto'
 
 const DEV_API_BASE = 'https://dev.to/api'
+const ARTICLES_PER_PAGE = 12
+const FOLLOWERS_PER_PAGE = 1000
 
 function requireApiKey(apiKey: unknown): string {
   if (typeof apiKey !== 'string' || apiKey.trim().length === 0) {
@@ -46,6 +49,27 @@ function requireSlug(slug: unknown): string {
   }
 
   return articleSlug
+}
+
+function requirePage(page: unknown): number {
+  if (typeof page !== 'number' && typeof page !== 'string') {
+    throw createError({ statusCode: 400, statusMessage: 'Article page is invalid' })
+  }
+
+  const normalized = String(page).trim()
+  if (!/^[1-9]\d*$/.test(normalized)) {
+    throw createError({ statusCode: 400, statusMessage: 'Article page is invalid' })
+  }
+
+  return Number(normalized)
+}
+
+function requireTag(tag: unknown): string {
+  if (typeof tag !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(tag.trim())) {
+    throw createError({ statusCode: 404, statusMessage: 'Tag not found' })
+  }
+
+  return tag.trim()
 }
 
 function getUpstreamStatus(error: unknown): number | undefined {
@@ -101,9 +125,45 @@ export async function getDevtoUser(username: unknown): Promise<DevtoUser> {
   )
 }
 
-export async function getDevtoArticles(apiKey: unknown): Promise<DevtoArticleSummary[]> {
+export async function getDevtoFollowers(apiKey: unknown): Promise<DevtoFollower[]> {
+  const configuredApiKey = requireApiKey(apiKey)
+  const followers: DevtoFollower[] = []
+
+  for (let page = 1; ; page++) {
+    const currentPage = await fetchDevto<DevtoFollower[]>(
+      `/followers/users?page=${page}&per_page=${FOLLOWERS_PER_PAGE}&sort=-created_at`,
+      { apiKey: configuredApiKey },
+    )
+    followers.push(...currentPage)
+
+    if (currentPage.length < FOLLOWERS_PER_PAGE) return followers
+  }
+}
+
+export async function getDevtoArticles(
+  apiKey: unknown,
+  page: unknown,
+): Promise<DevtoArticleSummary[]> {
   requireApiKey(apiKey)
-  return await fetchDevto<DevtoArticleSummary[]>('/articles/me/published', { apiKey })
+  const configuredPage = requirePage(page)
+  return await fetchDevto<DevtoArticleSummary[]>(
+    `/articles/me/published?page=${configuredPage}&per_page=${ARTICLES_PER_PAGE}`,
+    { apiKey },
+  )
+}
+
+export async function getDevtoArticlesByTag(
+  username: unknown,
+  tag: unknown,
+  page: unknown,
+): Promise<DevtoArticleSummary[]> {
+  const configuredUsername = requireUsername(username)
+  const configuredTag = requireTag(tag)
+  const configuredPage = requirePage(page)
+
+  return await fetchDevto<DevtoArticleSummary[]>(
+    `/articles?username=${encodeURIComponent(configuredUsername)}&tag=${encodeURIComponent(configuredTag)}&page=${configuredPage}&per_page=${ARTICLES_PER_PAGE}`,
+  )
 }
 
 export async function getDevtoArticle(
