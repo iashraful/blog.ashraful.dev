@@ -7,6 +7,16 @@
           <span class="block truncate font-display text-xl leading-tight text-ink transition-colors group-hover:text-accent dark:text-paper dark:group-hover:text-indigo-300 sm:text-2xl">Ashraful’s Blog</span>
         </span>
       </NuxtLink>
+      <form class="hidden flex-1 sm:block" aria-label="Search articles" @submit.prevent="search">
+        <label class="sr-only" for="article-search">Search articles</label>
+        <input
+          id="article-search"
+          v-model="searchQuery"
+          type="search"
+          placeholder="Search articles"
+          class="w-full rounded-full border border-stone/80 bg-white/50 px-4 py-2 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none dark:border-stone/40 dark:bg-black/10 dark:text-paper dark:placeholder:text-paper/50"
+        >
+      </form>
       <nav class="flex shrink-0 items-center gap-1 rounded-full border border-stone/80 bg-white/50 p-1 dark:border-stone/40 dark:bg-black/10" aria-label="Primary navigation">
         <NuxtLink to="/" exact-active-class="bg-ink !text-paper dark:bg-paper dark:!text-ink" class="min-h-11 min-w-11 rounded-full px-3 py-2 text-xs font-semibold text-ink/65 transition-colors hover:text-accent dark:hover:text-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:focus-visible:outline-indigo-300 dark:text-paper/70 sm:px-4 sm:text-sm">
           Home
@@ -19,6 +29,17 @@
     </div>
   </header>
 </template>
+
+<script setup lang="ts">
+const searchQuery = ref('')
+
+function search() {
+  const query = searchQuery.value.trim()
+  if (!query) return
+
+  navigateTo({ path: '/search', query: { q: query } })
+}
+</script>
 
 <style scoped>
 .brand-mark {

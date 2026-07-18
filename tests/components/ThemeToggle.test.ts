@@ -31,6 +31,15 @@ describe('publication shell', () => {
     expect(component).toContain('min-w-11')
   })
 
+  it('submits header searches to the dedicated search page', () => {
+    const component = source('AppHeader.vue')
+
+    expect(component).toContain('aria-label="Search articles"')
+    expect(component).toContain('type="search"')
+    expect(component).toContain("path: '/search'")
+    expect(component).toContain('query: { q: query }')
+  })
+
   it('defines a safe icon-led DEV footer link', () => {
     const component = source('AppFooter.vue')
 

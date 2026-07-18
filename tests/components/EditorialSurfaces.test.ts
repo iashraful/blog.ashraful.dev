@@ -47,6 +47,25 @@ describe('article terminology', () => {
   })
 })
 
+describe('article search page', () => {
+  it('uses the query parameter, shared matcher, and article cards', () => {
+    const search = source('pages/search.vue')
+
+    expect(search).toContain("String(route.query.q || '').trim()")
+    expect(search).toContain('filterArticles(articles.value || [], query.value)')
+    expect(search).toContain('v-for="article in filteredArticles"')
+    expect(search).toContain('<ArticleCard')
+  })
+
+  it('shows explicit empty, no-match, and request-error states', () => {
+    const search = source('pages/search.vue')
+
+    expect(search).toContain('No articles yet. Check back soon.')
+    expect(search).toContain('No articles match "{{ query }}".')
+    expect(search).toContain("Couldn't load articles. Please try again.")
+  })
+})
+
 describe('editorial navigation feedback', () => {
   it('mounts the global navigation indicator before the layout', () => {
     const app = source('app.vue')
