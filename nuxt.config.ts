@@ -27,6 +27,10 @@ export default defineNuxtConfig({
       meta: [
         { name: 'description', content: 'Personal blog powered by dev.to' },
       ],
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'alternate icon', href: '/favicon.ico' },
+      ],
     },
   },
 })
