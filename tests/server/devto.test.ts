@@ -132,3 +132,11 @@ describe('DEV article handler configuration', () => {
     expect(handler).not.toContain('config.devToApiKey')
   })
 })
+
+describe('Docker runtime configuration', () => {
+  it('maps the DEV API key to Nuxt runtime config', () => {
+    const compose = readFileSync(new URL('../../docker-compose.yml', import.meta.url), 'utf8')
+
+    expect(compose).toContain('NUXT_DEV_TO_API_KEY: ${DEV_TO_API_KEY}')
+  })
+})

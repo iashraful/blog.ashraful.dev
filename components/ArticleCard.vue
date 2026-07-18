@@ -20,7 +20,7 @@
     >
       <span class="font-display text-8xl text-paper/30">{{ article.title.charAt(0) }}</span>
     </div>
-    <span class="absolute left-4 top-4 border border-paper/50 bg-ink/70 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-paper">Field note</span>
+    <span class="absolute left-4 top-4 border border-paper/50 bg-ink/70 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-paper">{{ formatDate(article.published_at) }}</span>
 
     <div class="p-5 sm:p-6">
       <div class="mb-4 flex flex-wrap gap-2">

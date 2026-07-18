@@ -21,7 +21,7 @@ describe('publication shell', () => {
   it('defines the publication masthead and navigation routes', () => {
     const component = source('AppHeader.vue')
 
-    expect(component).toContain('FIELD NOTES')
+    expect(component).not.toContain('FIELD NOTES')
     expect(component).toContain('Ashraful’s Blog')
     expect(component).toContain('brand-mark')
     expect(component).toContain('to="/"')

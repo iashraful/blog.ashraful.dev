@@ -3,7 +3,6 @@
     <section class="border-b border-stone/80 bg-paper dark:bg-ink">
       <div class="mx-auto grid max-w-6xl items-end gap-12 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[1.35fr_0.65fr] lg:gap-20">
         <div>
-          <p class="mb-6 text-xs font-semibold uppercase tracking-[0.24em] text-accent dark:text-indigo-300">ASHRAFUL / FIELD NOTES</p>
           <h1 class="max-w-3xl text-5xl leading-[0.98] sm:text-7xl">
             Thoughts from the interface between people and software.
           </h1>
@@ -68,7 +67,7 @@
 
       <!-- Empty -->
       <div v-else-if="articles && articles.length === 0" class="py-16 text-center">
-        <p class="text-lg text-ink/75 dark:text-paper/75">No field notes yet. Check back soon.</p>
+        <p class="text-lg text-ink/75 dark:text-paper/75">No articles yet. Check back soon.</p>
       </div>
 
       <!-- Grid -->

@@ -5,7 +5,7 @@
       class="inline-flex min-h-11 items-center gap-2 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-ink/80 dark:text-paper/80 hover:text-accent dark:hover:text-indigo-300 transition-colors mb-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent dark:focus-visible:outline-indigo-300"
     >
       <AppIcon name="arrow-left" :size="16" />
-      <span>Back to field notes</span>
+      <span>Back to articles</span>
     </NuxtLink>
 
     <!-- Error -->

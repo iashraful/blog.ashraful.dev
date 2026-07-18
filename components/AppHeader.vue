@@ -4,7 +4,6 @@
       <NuxtLink to="/" class="group flex min-w-0 items-center gap-3 rounded-md" aria-label="Ashraful's Blog home">
         <span class="brand-mark shrink-0" aria-hidden="true"><span /></span>
         <span class="min-w-0">
-          <span class="block truncate text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-accent dark:text-indigo-300">FIELD NOTES</span>
           <span class="block truncate font-display text-xl leading-tight text-ink transition-colors group-hover:text-accent dark:text-paper dark:group-hover:text-indigo-300 sm:text-2xl">Ashraful’s Blog</span>
         </span>
       </NuxtLink>

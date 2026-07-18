@@ -10,7 +10,8 @@ describe('editorial homepage surfaces', () => {
 
     expect(homepage).toContain("useAsyncData('devto-user'")
     expect(homepage).toContain("useAsyncData('devto-articles'")
-    expect(homepage).toContain('ASHRAFUL / FIELD NOTES')
+    expect(homepage).toContain('Latest writing')
+    expect(homepage).not.toContain('FIELD NOTES')
     expect(homepage).toContain('Latest writing')
     expect(homepage).toContain('articleCount')
   })
@@ -32,8 +33,17 @@ describe('editorial homepage surfaces', () => {
     expect(config).toContain("hover: '#3730a3'")
     expect(homepage).toContain('dark:text-indigo-300')
     expect(homepage).toContain('border-coral')
-    expect(homepage).toContain('text-accent dark:text-indigo-300')
+    expect(homepage).toContain('text-accent')
     expect(homepage).not.toContain('text-coral">The archive')
+  })
+})
+
+describe('article terminology', () => {
+  it('uses direct article labels instead of field-notes branding', () => {
+    for (const path of ['components/AppHeader.vue', 'pages/index.vue', 'pages/article/[slug].vue']) {
+      expect(source(path)).not.toContain('FIELD NOTES')
+      expect(source(path)).not.toContain('field notes')
+    }
   })
 })
 
@@ -88,7 +98,7 @@ describe('editorial accent treatments', () => {
   })
 
   it('applies dark accent text treatment to readable accent labels', () => {
-    for (const path of ['components/AppHeader.vue', 'pages/about.vue', 'pages/article/[slug].vue', 'error.vue']) {
+    for (const path of ['pages/about.vue', 'pages/article/[slug].vue', 'error.vue']) {
       expect(source(path)).toContain('dark:text-indigo-300')
     }
   })
