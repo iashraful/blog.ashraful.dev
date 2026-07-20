@@ -121,12 +121,13 @@ useHead({
   meta: () => {
     if (!article.value) return []
     const a = article.value
-    const image = a.cover_image || a.social_image || ''
+    const image = a.social_image || a.cover_image || ''
     return [
       { name: 'description', content: a.description },
       { property: 'og:title', content: a.title },
       { property: 'og:description', content: a.description },
       { property: 'og:image', content: image },
+      { property: 'og:image:alt', content: a.title },
       { property: 'og:url', content: `${siteUrl}/article/${a.slug}` },
       { property: 'og:type', content: 'article' },
       { name: 'twitter:card', content: 'summary_large_image' },
@@ -151,7 +152,7 @@ useHead({
           '@type': 'Article',
           headline: article.value.title,
           description: article.value.description,
-          image: article.value.cover_image || article.value.social_image,
+          image: article.value.social_image || article.value.cover_image,
           datePublished: article.value.published_at,
           author: { '@type': 'Person', name: 'Ashraful Islam' },
           url: `${siteUrl}/article/${article.value.slug}`,
