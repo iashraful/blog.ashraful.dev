@@ -146,7 +146,24 @@ const { data: followers, error: followersError, pending: followersPending } = aw
 )
 const showFollowers = ref(false)
 
+const siteUrl = useRuntimeConfig().public.siteUrl
+
 useHead({
   title: "About — Ashraful's Blog",
+  meta: () => {
+    if (!user.value) return []
+    return [
+      { name: 'description', content: user.value.summary || `About ${user.value.name}.` },
+      { property: 'og:title', content: `About — Ashraful's Blog` },
+      { property: 'og:description', content: user.value.summary || `About ${user.value.name}.` },
+      { property: 'og:image', content: user.value.profile_image },
+      { property: 'og:url', content: `${siteUrl}/about` },
+      { property: 'og:type', content: 'profile' },
+      { name: 'twitter:card', content: 'summary' },
+      { name: 'twitter:title', content: `About — Ashraful's Blog` },
+      { name: 'twitter:description', content: user.value.summary || `About ${user.value.name}.` },
+    ]
+  },
+  link: [{ rel: 'canonical', href: `${siteUrl}/about` }],
 })
 </script>

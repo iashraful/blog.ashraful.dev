@@ -114,7 +114,50 @@ function formatDate(dateStr: string): string {
   })
 }
 
+const siteUrl = useRuntimeConfig().public.siteUrl
+
 useHead({
   title: () => article.value?.title ? `${article.value.title} — Ashraful's Blog` : "Ashraful's Blog",
+  meta: () => {
+    if (!article.value) return []
+    const a = article.value
+    const image = a.cover_image || a.social_image || ''
+    return [
+      { name: 'description', content: a.description },
+      { property: 'og:title', content: a.title },
+      { property: 'og:description', content: a.description },
+      { property: 'og:image', content: image },
+      { property: 'og:url', content: `${siteUrl}/article/${a.slug}` },
+      { property: 'og:type', content: 'article' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: a.title },
+      { name: 'twitter:description', content: a.description },
+      { name: 'twitter:image', content: image },
+    ]
+  },
+  link: () => {
+    if (!article.value) return []
+    return [
+      { rel: 'canonical', href: `${siteUrl}/article/${article.value.slug}` },
+    ]
+  },
+  script: () => {
+    if (!article.value) return []
+    return [
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: article.value.title,
+          description: article.value.description,
+          image: article.value.cover_image || article.value.social_image,
+          datePublished: article.value.published_at,
+          author: { '@type': 'Person', name: 'Ashraful Islam' },
+          url: `${siteUrl}/article/${article.value.slug}`,
+        }),
+      },
+    ]
+  },
 })
 </script>

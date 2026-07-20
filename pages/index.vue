@@ -141,4 +141,22 @@ async function loadMore() {
 }
 
 const articleCount = computed(() => articles.value.length)
+
+const siteUrl = useRuntimeConfig().public.siteUrl
+
+useHead({
+  title: "Ashraful's Blog",
+  meta: [
+    { name: 'description', content: user.value?.summary || 'Software developer sharing thoughtful notes on code, tools, and technology.' },
+    { property: 'og:title', content: "Ashraful's Blog" },
+    { property: 'og:description', content: user.value?.summary || 'Thoughts from the interface between people and software.' },
+    { property: 'og:image', content: user.value?.profile_image || '' },
+    { property: 'og:url', content: siteUrl },
+    { property: 'og:type', content: 'website' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: "Ashraful's Blog" },
+    { name: 'twitter:description', content: user.value?.summary || 'Thoughts from the interface between people and software.' },
+  ],
+  link: [{ rel: 'canonical', href: siteUrl }],
+})
 </script>

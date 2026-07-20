@@ -64,5 +64,20 @@ function search() {
   router.push({ path: '/search', query: q ? { q } : {} })
 }
 
-useHead({ title: "Search Articles — Ashraful's Blog" })
+const siteUrl = useRuntimeConfig().public.siteUrl
+
+useHead({
+  title: "Search Articles — Ashraful's Blog",
+  meta: [
+    { name: 'description', content: 'Search all articles on Ashraful\'s Blog.' },
+    { property: 'og:title', content: "Search Articles — Ashraful's Blog" },
+    { property: 'og:description', content: 'Search all articles on Ashraful\'s Blog.' },
+    { property: 'og:url', content: `${siteUrl}/search` },
+    { property: 'og:type', content: 'website' },
+    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:title', content: "Search Articles — Ashraful's Blog" },
+    { name: 'twitter:description', content: 'Search all articles on Ashraful\'s Blog.' },
+  ],
+  link: [{ rel: 'canonical', href: `${siteUrl}/search` }],
+})
 </script>

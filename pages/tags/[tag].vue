@@ -95,5 +95,20 @@ async function loadMore() {
   }
 }
 
-useHead({ title: () => `${tag.value} Articles — Ashraful's Blog` })
+const siteUrl = useRuntimeConfig().public.siteUrl
+
+useHead({
+  title: () => `${tag.value} Articles — Ashraful's Blog`,
+  meta: () => [
+    { name: 'description', content: `Articles tagged with #${tag.value} on Ashraful's Blog.` },
+    { property: 'og:title', content: `${tag.value} Articles — Ashraful's Blog` },
+    { property: 'og:description', content: `Articles tagged with #${tag.value}.` },
+    { property: 'og:url', content: `${siteUrl}/tags/${encodeURIComponent(tag.value)}` },
+    { property: 'og:type', content: 'website' },
+    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:title', content: `${tag.value} Articles — Ashraful's Blog` },
+    { name: 'twitter:description', content: `Articles tagged with #${tag.value}.` },
+  ],
+  link: () => [{ rel: 'canonical', href: `${siteUrl}/tags/${encodeURIComponent(tag.value)}` }],
+})
 </script>
