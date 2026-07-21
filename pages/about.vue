@@ -144,7 +144,7 @@ const { data: followers, error: followersError, pending: followersPending } = aw
   'devto-followers',
   () => getFollowers(),
 )
-const showFollowers = ref(false)
+const showFollowers = ref(true)
 
 const siteUrl = useRuntimeConfig().public.siteUrl
 
