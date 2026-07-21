@@ -21,6 +21,11 @@ describe('AppIcon', () => {
       'arrow-up-right',
       'sun',
       'moon',
+      'x',
+      'linkedin',
+      'facebook',
+      'link',
+      'check',
     ]) {
       expect(source).toContain(`'${name}'`)
     }

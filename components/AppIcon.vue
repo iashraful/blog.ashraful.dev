@@ -12,6 +12,11 @@ type IconName =
   | 'arrow-up-right'
   | 'sun'
   | 'moon'
+  | 'x'
+  | 'linkedin'
+  | 'facebook'
+  | 'link'
+  | 'check'
 
 withDefaults(defineProps<{ name: IconName; size?: number }>(), { size: 18 })
 </script>
@@ -69,6 +74,21 @@ withDefaults(defineProps<{ name: IconName; size?: number }>(), { size: 18 })
     </template>
     <template v-else-if="name === 'moon'">
       <path d="M20.5 15.2A8.5 8.5 0 0 1 8.8 3.5 8.5 8.5 0 1 0 20.5 15.2Z" />
+    </template>
+    <template v-else-if="name === 'x'">
+      <path d="M18 2h3.7l-8 9.5L22 22h-7.4l-5.8-8L2.5 2H10l5.3 7.5L18 2Zm-1 18h2L6 3.9H3.8l13.2 16Z" />
+    </template>
+    <template v-else-if="name === 'linkedin'">
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6ZM2 9h4v12H2ZM6 4a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+    </template>
+    <template v-else-if="name === 'facebook'">
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3V2Z" />
+    </template>
+    <template v-else-if="name === 'link'">
+      <path d="M10 13a5 5 0 0 0 7.5.3l3-3a5 5 0 0 0-7-7l-1.5 1.5M14 11a5 5 0 0 0-7.5-.3l-3 3a5 5 0 0 0 7 7l1.5-1.5" />
+    </template>
+    <template v-else-if="name === 'check'">
+      <path d="M20 6 9 17l-5-5" />
     </template>
   </svg>
 </template>
