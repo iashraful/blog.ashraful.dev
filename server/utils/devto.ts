@@ -41,7 +41,7 @@ function requireSlug(slug: unknown): string {
   }
 
   const articleSlug = slug
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(articleSlug)) {
+  if (!/^-?[a-z0-9]+(?:-[a-z0-9]+)*$/.test(articleSlug)) {
     throw createError({
       statusCode: 400,
       statusMessage: 'Article slug is invalid',

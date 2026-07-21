@@ -129,6 +129,16 @@ describe('DEV server client article requests', () => {
     expect(fetchMock).not.toHaveBeenCalled()
   })
 
+  it('accepts a slug with leading hyphen (valid on DEV)', async () => {
+    vi.stubGlobal('$fetch', fetchMock.mockResolvedValue({ id: 42 }))
+
+    await getDevtoArticle('ashraful', '-what-is-load-balancing-3pap')
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://dev.to/api/articles/ashraful/-what-is-load-balancing-3pap',
+    )
+  })
+
   it.each(['../x', '?', 'building-a-blog-\u0000-42'])('rejects a malformed nonblank slug %j before calling DEV', async (slug) => {
     await expect(getDevtoArticle('ashraful', slug)).rejects.toMatchObject({
       statusCode: 400,
