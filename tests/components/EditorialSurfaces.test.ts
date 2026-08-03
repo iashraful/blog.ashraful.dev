@@ -245,6 +245,13 @@ describe('editorial article reader surface', () => {
     expect(article).toContain('article.positive_reactions_count')
     expect(article).toContain('article.comments_count')
   })
+
+  it('hides embedded maximize controls only inside article prose', () => {
+    const css = source('assets/css/main.css')
+
+    expect(css).toContain('.prose-devto .highlight__panel-action.js-fullscreen-code-action')
+    expect(css).toContain('display: none;')
+  })
 })
 
 describe('editorial about surface', () => {

@@ -102,6 +102,10 @@
   .prose-devto td {
     @apply border border-stone px-4 py-2;
   }
+
+  .prose-devto .highlight__panel-action.js-fullscreen-code-action {
+    display: none;
+  }
 }
 
 .editorial-page-enter-active,
