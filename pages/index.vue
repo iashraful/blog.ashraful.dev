@@ -44,13 +44,13 @@
 
       <!-- Error -->
       <ErrorBanner
-        v-if="error"
+        v-if="error && !healing"
         message="Couldn't load articles. Please try again."
         @retry="refresh()"
       />
 
       <!-- Loading -->
-      <div v-else-if="pending" class="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
+      <div v-else-if="pending || healing" class="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
         <div
           v-for="i in 6"
           :key="i"
@@ -108,6 +108,19 @@ const { getUser, getArticles } = useDevtoApi()
 const { data: user } = await useAsyncData('devto-user', () => getUser())
 
 const { data: firstPage, error, pending, refresh } = await useAsyncData('devto-articles', () => getArticles(1))
+
+const healing = ref(false)
+
+if (error.value) {
+  healing.value = true
+  if (import.meta.client) {
+    refresh()
+      .catch(() => {})
+      .finally(() => {
+        healing.value = false
+      })
+  }
+}
 
 const articles = ref<DevtoArticleSummary[]>([])
 const page = ref(1)

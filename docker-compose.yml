@@ -1,6 +1,9 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        DEV_TO_API_KEY: ${DEV_TO_API_KEY}
     ports:
       - "3000:3000"
     env_file:

@@ -12,6 +12,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ARG DEV_TO_API_KEY
+ENV DEV_TO_API_KEY=$DEV_TO_API_KEY
+
 RUN yarn build
 
 FROM node:22-alpine AS runner
