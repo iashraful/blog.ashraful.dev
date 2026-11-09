@@ -234,4 +234,46 @@ describe('devto filesystem cache', () => {
 
     delete process.env.DEVTO_CACHE
   })
+
+  it('correctly parses TTL values from env and falls back to code defaults', async () => {
+    const {
+      getAboutTtlMs,
+      getArticleTtlMs,
+      getArticlesTtlMs,
+      parseTtlSeconds,
+    } = await import('../../server/utils/devtoCache')
+
+    // parseTtlSeconds unit tests
+    expect(parseTtlSeconds(undefined, 1000)).toBe(1000)
+    expect(parseTtlSeconds('', 1000)).toBe(1000)
+    expect(parseTtlSeconds('not-a-number', 1000)).toBe(1000)
+    expect(parseTtlSeconds('-50', 1000)).toBe(1000)
+    expect(parseTtlSeconds('60', 1000)).toBe(60000)
+    expect(parseTtlSeconds('Infinity', 1000)).toBe(Infinity)
+    expect(parseTtlSeconds('infinity', 1000)).toBe(Infinity)
+
+    // Code defaults
+    delete process.env.DEV_TO_CACHE_TTL_ARTICLES
+    delete process.env.DEV_TO_CACHE_TTL
+    delete process.env.DEV_TO_CACHE_TTL_ABOUT
+    delete process.env.DEV_TO_CACHE_TTL_ARTICLE
+
+    expect(getArticlesTtlMs()).toBe(3600 * 1000) // 1 hour
+    expect(getAboutTtlMs()).toBe(86400 * 1000) // 24 hours
+    expect(getArticleTtlMs()).toBe(Infinity) // forever
+
+    // Env overrides
+    process.env.DEV_TO_CACHE_TTL_ARTICLES = '1800' // 30 min
+    process.env.DEV_TO_CACHE_TTL_ABOUT = '43200' // 12 hours
+    process.env.DEV_TO_CACHE_TTL_ARTICLE = '604800' // 7 days
+
+    expect(getArticlesTtlMs()).toBe(1800 * 1000)
+    expect(getAboutTtlMs()).toBe(43200 * 1000)
+    expect(getArticleTtlMs()).toBe(604800 * 1000)
+
+    // Cleanup env
+    delete process.env.DEV_TO_CACHE_TTL_ARTICLES
+    delete process.env.DEV_TO_CACHE_TTL_ABOUT
+    delete process.env.DEV_TO_CACHE_TTL_ARTICLE
+  })
 })

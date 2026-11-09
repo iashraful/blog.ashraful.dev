@@ -16,6 +16,39 @@ export interface DevtoCacheOptions {
 const DEFAULT_CACHE_DIR = join(process.cwd(), '.cache', 'devto')
 const DEFAULT_TTL_MS = 60 * 60 * 1000 // 1 hour
 
+export function parseTtlSeconds(envVal: string | undefined, defaultMs: number): number {
+  if (typeof envVal !== 'string') return defaultMs
+  const trimmed = envVal.trim().toLowerCase()
+  if (trimmed === '') return defaultMs
+  if (trimmed === 'infinity') return Infinity
+  const parsed = Number(trimmed)
+  if (!Number.isNaN(parsed) && parsed > 0) {
+    return parsed * 1000
+  }
+  return defaultMs
+}
+
+export function getArticlesTtlMs(): number {
+  return parseTtlSeconds(
+    process.env.DEV_TO_CACHE_TTL_ARTICLES || process.env.DEV_TO_CACHE_TTL,
+    DEFAULT_TTL_MS,
+  )
+}
+
+export function getAboutTtlMs(): number {
+  return parseTtlSeconds(
+    process.env.DEV_TO_CACHE_TTL_ABOUT,
+    24 * 60 * 60 * 1000, // 24 hours default
+  )
+}
+
+export function getArticleTtlMs(): number {
+  return parseTtlSeconds(
+    process.env.DEV_TO_CACHE_TTL_ARTICLE,
+    Infinity, // forever default
+  )
+}
+
 function getCacheDir(customDir?: string): string {
   if (customDir) return customDir
   if (process.env.DEVTO_CACHE_DIR) return process.env.DEVTO_CACHE_DIR
@@ -23,13 +56,7 @@ function getCacheDir(customDir?: string): string {
 }
 
 function getDefaultTtlMs(): number {
-  if (process.env.DEV_TO_CACHE_TTL) {
-    const parsed = Number(process.env.DEV_TO_CACHE_TTL)
-    if (!Number.isNaN(parsed) && parsed > 0) {
-      return parsed * 1000
-    }
-  }
-  return DEFAULT_TTL_MS
+  return getArticlesTtlMs()
 }
 
 export function getCacheFilePath(key: string, cacheDir: string): string {

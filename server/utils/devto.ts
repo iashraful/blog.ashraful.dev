@@ -5,12 +5,16 @@ import type {
   DevtoFollower,
   DevtoUser,
 } from '../../shared/types/devto'
-import { withDevtoFsCache } from './devtoCache'
+import {
+  getAboutTtlMs,
+  getArticleTtlMs,
+  getArticlesTtlMs,
+  withDevtoFsCache,
+} from './devtoCache'
 
 const DEV_API_BASE = 'https://dev.to/api'
 const ARTICLES_PER_PAGE = 12
 const FOLLOWERS_PER_PAGE = 1000
-const ABOUT_TTL_MS = 24 * 60 * 60 * 1000 // 24 hours
 
 function requireApiKey(apiKey: unknown): string {
   if (typeof apiKey !== 'string' || apiKey.trim().length === 0) {
@@ -127,7 +131,7 @@ export async function getDevtoUser(username: unknown): Promise<DevtoUser> {
     () => fetchDevto<DevtoUser>(
       `/users/by_username?url=${encodeURIComponent(configuredUsername)}`,
     ),
-    { ttlMs: ABOUT_TTL_MS },
+    { ttlMs: getAboutTtlMs() },
   )
 }
 
@@ -147,7 +151,7 @@ export async function getDevtoFollowers(apiKey: unknown): Promise<DevtoFollower[
         if (currentPage.length < FOLLOWERS_PER_PAGE) return followers
       }
     },
-    { ttlMs: ABOUT_TTL_MS },
+    { ttlMs: getAboutTtlMs() },
   )
 }
 
@@ -163,6 +167,7 @@ export async function getDevtoArticles(
       `/articles/me/published?page=${configuredPage}&per_page=${ARTICLES_PER_PAGE}`,
       { apiKey },
     ),
+    { ttlMs: getArticlesTtlMs() },
   )
 }
 
@@ -180,6 +185,7 @@ export async function getDevtoArticlesByTag(
     () => fetchDevto<DevtoArticleSummary[]>(
       `/articles?username=${encodeURIComponent(configuredUsername)}&tag=${encodeURIComponent(configuredTag)}&page=${configuredPage}&per_page=${ARTICLES_PER_PAGE}`,
     ),
+    { ttlMs: getArticlesTtlMs() },
   )
 }
 
@@ -196,7 +202,7 @@ export async function getDevtoArticle(
       `/articles/${encodeURIComponent(configuredUsername)}/${encodeURIComponent(articleSlug)}`,
       { notFoundMessage: 'Article not found' },
     ),
-    { ttlMs: Infinity },
+    { ttlMs: getArticleTtlMs() },
   )
 }
 
@@ -209,5 +215,6 @@ export async function getDevtoAllArticles(
     () => fetchDevto<DevtoArticleSummary[]>(
       `/articles?username=${encodeURIComponent(configuredUsername)}&per_page=200`,
     ),
+    { ttlMs: getArticlesTtlMs() },
   )
 }
