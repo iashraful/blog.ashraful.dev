@@ -5,6 +5,7 @@ import type {
   DevtoFollower,
   DevtoUser,
 } from '../../shared/types/devto'
+import { withDevtoFsCache } from './devtoCache'
 
 const DEV_API_BASE = 'https://dev.to/api'
 const ARTICLES_PER_PAGE = 12
@@ -120,24 +121,31 @@ async function fetchDevto<T>(
 
 export async function getDevtoUser(username: unknown): Promise<DevtoUser> {
   const configuredUsername = requireUsername(username)
-  return await fetchDevto<DevtoUser>(
-    `/users/by_username?url=${encodeURIComponent(configuredUsername)}`,
+  return await withDevtoFsCache(
+    `user_${configuredUsername}`,
+    () => fetchDevto<DevtoUser>(
+      `/users/by_username?url=${encodeURIComponent(configuredUsername)}`,
+    ),
   )
 }
 
 export async function getDevtoFollowers(apiKey: unknown): Promise<DevtoFollower[]> {
   const configuredApiKey = requireApiKey(apiKey)
-  const followers: DevtoFollower[] = []
+  return await withDevtoFsCache(
+    'followers',
+    async () => {
+      const followers: DevtoFollower[] = []
+      for (let page = 1; ; page++) {
+        const currentPage = await fetchDevto<DevtoFollower[]>(
+          `/followers/users?page=${page}&per_page=${FOLLOWERS_PER_PAGE}&sort=-created_at`,
+          { apiKey: configuredApiKey },
+        )
+        followers.push(...currentPage)
 
-  for (let page = 1; ; page++) {
-    const currentPage = await fetchDevto<DevtoFollower[]>(
-      `/followers/users?page=${page}&per_page=${FOLLOWERS_PER_PAGE}&sort=-created_at`,
-      { apiKey: configuredApiKey },
-    )
-    followers.push(...currentPage)
-
-    if (currentPage.length < FOLLOWERS_PER_PAGE) return followers
-  }
+        if (currentPage.length < FOLLOWERS_PER_PAGE) return followers
+      }
+    },
+  )
 }
 
 export async function getDevtoArticles(
@@ -146,9 +154,12 @@ export async function getDevtoArticles(
 ): Promise<DevtoArticleSummary[]> {
   requireApiKey(apiKey)
   const configuredPage = requirePage(page)
-  return await fetchDevto<DevtoArticleSummary[]>(
-    `/articles/me/published?page=${configuredPage}&per_page=${ARTICLES_PER_PAGE}`,
-    { apiKey },
+  return await withDevtoFsCache(
+    `articles_me_page_${configuredPage}`,
+    () => fetchDevto<DevtoArticleSummary[]>(
+      `/articles/me/published?page=${configuredPage}&per_page=${ARTICLES_PER_PAGE}`,
+      { apiKey },
+    ),
   )
 }
 
@@ -161,8 +172,11 @@ export async function getDevtoArticlesByTag(
   const configuredTag = requireTag(tag)
   const configuredPage = requirePage(page)
 
-  return await fetchDevto<DevtoArticleSummary[]>(
-    `/articles?username=${encodeURIComponent(configuredUsername)}&tag=${encodeURIComponent(configuredTag)}&page=${configuredPage}&per_page=${ARTICLES_PER_PAGE}`,
+  return await withDevtoFsCache(
+    `articles_tag_${configuredUsername}_${configuredTag}_page_${configuredPage}`,
+    () => fetchDevto<DevtoArticleSummary[]>(
+      `/articles?username=${encodeURIComponent(configuredUsername)}&tag=${encodeURIComponent(configuredTag)}&page=${configuredPage}&per_page=${ARTICLES_PER_PAGE}`,
+    ),
   )
 }
 
@@ -173,8 +187,23 @@ export async function getDevtoArticle(
   const configuredUsername = requireUsername(username)
   const articleSlug = requireSlug(slug)
 
-  return await fetchDevto<DevtoArticle>(
-    `/articles/${encodeURIComponent(configuredUsername)}/${encodeURIComponent(articleSlug)}`,
-    { notFoundMessage: 'Article not found' },
+  return await withDevtoFsCache(
+    `article_${configuredUsername}_${articleSlug}`,
+    () => fetchDevto<DevtoArticle>(
+      `/articles/${encodeURIComponent(configuredUsername)}/${encodeURIComponent(articleSlug)}`,
+      { notFoundMessage: 'Article not found' },
+    ),
+  )
+}
+
+export async function getDevtoAllArticles(
+  username: unknown,
+): Promise<DevtoArticleSummary[]> {
+  const configuredUsername = requireUsername(username)
+  return await withDevtoFsCache(
+    `articles_all_${configuredUsername}`,
+    () => fetchDevto<DevtoArticleSummary[]>(
+      `/articles?username=${encodeURIComponent(configuredUsername)}&per_page=200`,
+    ),
   )
 }

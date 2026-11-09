@@ -1,12 +1,15 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { readFileSync } from 'node:fs'
 import {
+  getDevtoAllArticles,
   getDevtoArticle,
   getDevtoArticles,
   getDevtoArticlesByTag,
   getDevtoFollowers,
   getDevtoUser,
 } from '../../server/utils/devto'
+
+process.env.DEVTO_CACHE = 'false'
 
 const fetchMock = vi.fn()
 
@@ -106,6 +109,16 @@ describe('DEV server client requests', () => {
       2,
       'https://dev.to/api/followers/users?page=2&per_page=1000&sort=-created_at',
       { headers: { 'api-key': 'server-secret' } },
+    )
+  })
+
+  it('fetches all articles with per_page 200 without authentication', async () => {
+    vi.stubGlobal('$fetch', fetchMock.mockResolvedValue([]))
+
+    await getDevtoAllArticles('ashraful')
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://dev.to/api/articles?username=ashraful&per_page=200',
     )
   })
 })

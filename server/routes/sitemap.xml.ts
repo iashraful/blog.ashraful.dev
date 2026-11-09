@@ -1,4 +1,5 @@
-import { setHeader } from 'h3'
+import { defineEventHandler, setHeader } from 'h3'
+import { getDevtoAllArticles } from '../utils/devto'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
@@ -6,9 +7,7 @@ export default defineEventHandler(async (event) => {
 
   let articles: any[] = []
   try {
-    articles = await $fetch(
-      `https://dev.to/api/articles?username=${config.public.devToUsername}&per_page=200`,
-    )
+    articles = await getDevtoAllArticles(config.public.devToUsername)
   }
   catch {
     // return a minimal sitemap if the API is unavailable
