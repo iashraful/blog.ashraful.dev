@@ -28,6 +28,8 @@ RUN addgroup --system --gid 1001 nodejs && \
 
 COPY --from=builder --chown=nuxtjs:nodejs /app/.output ./.output
 
+RUN mkdir -p /app/.cache && chown -R nuxtjs:nodejs /app/.cache
+
 USER nuxtjs
 
 EXPOSE 3000

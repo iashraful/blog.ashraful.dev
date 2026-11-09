@@ -36,35 +36,4 @@ export default defineNuxtConfig({
       ],
     },
   },
-  nitro: {
-    prerender: {
-      routes: ['/', '/sitemap.xml', '/search', '/about'],
-    },
-    hooks: {
-      'prerender:routes': async (routes) => {
-        try {
-          const { withDevtoFsCache } = await import('./server/utils/devtoCache')
-          const articles = await withDevtoFsCache('articles_all_ashraful', async () => {
-            const res = await fetch(
-              `https://dev.to/api/articles?username=ashraful&per_page=200`,
-            )
-            if (!res.ok) {
-              const err = new Error(`dev.to returned ${res.status}`)
-              Object.assign(err, { statusCode: res.status })
-              throw err
-            }
-            return await res.json()
-          })
-          if (Array.isArray(articles)) {
-            for (const a of articles) {
-              routes.add(`/article/${a.slug}`)
-            }
-          }
-        }
-        catch {
-          console.warn('Could not fetch articles for pre-rendering')
-        }
-      },
-    },
-  },
 })

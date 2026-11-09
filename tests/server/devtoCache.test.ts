@@ -151,6 +151,33 @@ describe('devto filesystem cache', () => {
     expect(cached?.data).toBe('safe')
   })
 
+  it('treats ttlMs: Infinity as never expiring', async () => {
+    const fetcher1 = vi.fn().mockResolvedValue({ id: 1, title: 'Forever Article' })
+    await withDevtoFsCache('forever_key', fetcher1, {
+      cacheDir: TEST_CACHE_DIR,
+      ttlMs: Infinity,
+    })
+
+    // Manually write an entry with an old timestamp (1 year ago)
+    const { getCacheFilePath } = await import('../../server/utils/devtoCache')
+    const filePath = getCacheFilePath('forever_key', TEST_CACHE_DIR)
+    const oldEntry = {
+      timestamp: Date.now() - 1000 * 60 * 60 * 24 * 365,
+      data: { id: 1, title: 'Forever Article' },
+    }
+    await fs.writeFile(filePath, JSON.stringify(oldEntry), 'utf-8')
+
+    // Second call with ttlMs: Infinity should still hit cache even with old timestamp
+    const fetcher2 = vi.fn().mockResolvedValue({ id: 2, title: 'Newer Article' })
+    const result = await withDevtoFsCache('forever_key', fetcher2, {
+      cacheDir: TEST_CACHE_DIR,
+      ttlMs: Infinity,
+    })
+
+    expect(result).toEqual({ id: 1, title: 'Forever Article' })
+    expect(fetcher2).not.toHaveBeenCalled()
+  })
+
   it('bypasses cache when DEVTO_CACHE is set to false', async () => {
     process.env.DEVTO_CACHE = 'false'
     const fetcher = vi.fn().mockResolvedValue({ id: 99 })

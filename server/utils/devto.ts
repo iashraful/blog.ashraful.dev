@@ -193,6 +193,7 @@ export async function getDevtoArticle(
       `/articles/${encodeURIComponent(configuredUsername)}/${encodeURIComponent(articleSlug)}`,
       { notFoundMessage: 'Article not found' },
     ),
+    { ttlMs: Infinity },
   )
 }
 
