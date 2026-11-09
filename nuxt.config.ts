@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     public: {
       devToUsername: 'ashraful',
       siteUrl: 'https://blog.ashraful.dev',
+      googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID || '',
     },
   },
   pageTransition: {

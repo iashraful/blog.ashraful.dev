@@ -12,6 +12,7 @@ services:
       - .env
     environment:
       NUXT_DEV_TO_API_KEY: ${DEV_TO_API_KEY}
+      NUXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${GOOGLE_ANALYTICS_ID:-}
     restart: unless-stopped
 
 volumes:
