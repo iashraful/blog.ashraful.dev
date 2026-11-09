@@ -10,6 +10,7 @@ import { withDevtoFsCache } from './devtoCache'
 const DEV_API_BASE = 'https://dev.to/api'
 const ARTICLES_PER_PAGE = 12
 const FOLLOWERS_PER_PAGE = 1000
+const ABOUT_TTL_MS = 24 * 60 * 60 * 1000 // 24 hours
 
 function requireApiKey(apiKey: unknown): string {
   if (typeof apiKey !== 'string' || apiKey.trim().length === 0) {
@@ -126,6 +127,7 @@ export async function getDevtoUser(username: unknown): Promise<DevtoUser> {
     () => fetchDevto<DevtoUser>(
       `/users/by_username?url=${encodeURIComponent(configuredUsername)}`,
     ),
+    { ttlMs: ABOUT_TTL_MS },
   )
 }
 
@@ -145,6 +147,7 @@ export async function getDevtoFollowers(apiKey: unknown): Promise<DevtoFollower[
         if (currentPage.length < FOLLOWERS_PER_PAGE) return followers
       }
     },
+    { ttlMs: ABOUT_TTL_MS },
   )
 }
 

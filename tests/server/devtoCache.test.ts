@@ -178,6 +178,47 @@ describe('devto filesystem cache', () => {
     expect(fetcher2).not.toHaveBeenCalled()
   })
 
+  it('respects 24-hour TTL for about page user and followers', async () => {
+    const ONE_DAY_MS = 24 * 60 * 60 * 1000
+    const fetcher = vi.fn().mockResolvedValue({ id: 1, name: 'Ashraful' })
+    await withDevtoFsCache('user_24h_test', fetcher, {
+      cacheDir: TEST_CACHE_DIR,
+      ttlMs: ONE_DAY_MS,
+    })
+
+    // Advance time by 23 hours (still fresh)
+    const { getCacheFilePath } = await import('../../server/utils/devtoCache')
+    const filePath = getCacheFilePath('user_24h_test', TEST_CACHE_DIR)
+    const entry23h = {
+      timestamp: Date.now() - 23 * 60 * 60 * 1000,
+      data: { id: 1, name: 'Ashraful' },
+    }
+    await fs.writeFile(filePath, JSON.stringify(entry23h), 'utf-8')
+
+    const secondFetcher = vi.fn().mockResolvedValue({ id: 1, name: 'Ashraful Updated' })
+    const cachedResult = await withDevtoFsCache('user_24h_test', secondFetcher, {
+      cacheDir: TEST_CACHE_DIR,
+      ttlMs: ONE_DAY_MS,
+    })
+    expect(cachedResult).toEqual({ id: 1, name: 'Ashraful' })
+    expect(secondFetcher).not.toHaveBeenCalled()
+
+    // Advance time by 25 hours (expired)
+    const entry25h = {
+      timestamp: Date.now() - 25 * 60 * 60 * 1000,
+      data: { id: 1, name: 'Ashraful' },
+    }
+    await fs.writeFile(filePath, JSON.stringify(entry25h), 'utf-8')
+
+    const thirdFetcher = vi.fn().mockResolvedValue({ id: 1, name: 'Ashraful Updated' })
+    const refreshedResult = await withDevtoFsCache('user_24h_test', thirdFetcher, {
+      cacheDir: TEST_CACHE_DIR,
+      ttlMs: ONE_DAY_MS,
+    })
+    expect(refreshedResult).toEqual({ id: 1, name: 'Ashraful Updated' })
+    expect(thirdFetcher).toHaveBeenCalledTimes(1)
+  })
+
   it('bypasses cache when DEVTO_CACHE is set to false', async () => {
     process.env.DEVTO_CACHE = 'false'
     const fetcher = vi.fn().mockResolvedValue({ id: 99 })
