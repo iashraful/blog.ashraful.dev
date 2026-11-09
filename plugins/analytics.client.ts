@@ -40,3 +40,4 @@ export default defineNuxtPlugin(() => {
     page_path: router.currentRoute.value.fullPath,
   })
 })
+
